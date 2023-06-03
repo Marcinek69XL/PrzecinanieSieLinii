@@ -30,13 +30,13 @@
         {
             this.AxTextBox = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.AyTextBox = new System.Windows.Forms.TextBox();
-            this.BxTextBox = new System.Windows.Forms.TextBox();
-            this.ByTextBox = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.ByTextBox = new System.Windows.Forms.TextBox();
+            this.BxTextBox = new System.Windows.Forms.TextBox();
+            this.AyTextBox = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -48,9 +48,13 @@
             this.CxTextBox = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.tabControl1.SuspendLayout();
             this.SuspendLayout();
             // 
             // AxTextBox
@@ -60,7 +64,6 @@
             this.AxTextBox.Name = "AxTextBox";
             this.AxTextBox.Size = new System.Drawing.Size(58, 20);
             this.AxTextBox.TabIndex = 0;
-            this.AxTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.AxTextBox_KeyPress);
             // 
             // groupBox1
             // 
@@ -79,50 +82,14 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Odcinek 1";
             // 
-            // AyTextBox
+            // label4
             // 
-            this.AyTextBox.Location = new System.Drawing.Point(139, 35);
-            this.AyTextBox.MaxLength = 3;
-            this.AyTextBox.Name = "AyTextBox";
-            this.AyTextBox.Size = new System.Drawing.Size(58, 20);
-            this.AyTextBox.TabIndex = 1;
-            this.AyTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.AyTextBox_KeyPress);
-            // 
-            // BxTextBox
-            // 
-            this.BxTextBox.Location = new System.Drawing.Point(31, 61);
-            this.BxTextBox.MaxLength = 3;
-            this.BxTextBox.Name = "BxTextBox";
-            this.BxTextBox.Size = new System.Drawing.Size(58, 20);
-            this.BxTextBox.TabIndex = 2;
-            this.BxTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.BxTextBox_KeyPress);
-            // 
-            // ByTextBox
-            // 
-            this.ByTextBox.Location = new System.Drawing.Point(139, 61);
-            this.ByTextBox.MaxLength = 3;
-            this.ByTextBox.Name = "ByTextBox";
-            this.ByTextBox.Size = new System.Drawing.Size(58, 20);
-            this.ByTextBox.TabIndex = 3;
-            this.ByTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ByTextBox_KeyPress);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 38);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(19, 13);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Ax";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(114, 38);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(19, 13);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "Ay";
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(114, 64);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(19, 13);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "By";
             // 
             // label3
             // 
@@ -133,17 +100,51 @@
             this.label3.TabIndex = 6;
             this.label3.Text = "Bx";
             // 
-            // label4
+            // label2
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(114, 64);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(19, 13);
-            this.label4.TabIndex = 7;
-            this.label4.Text = "By";
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(114, 38);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(19, 13);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "Ay";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 38);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(19, 13);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Ax";
+            // 
+            // ByTextBox
+            // 
+            this.ByTextBox.Location = new System.Drawing.Point(139, 61);
+            this.ByTextBox.MaxLength = 3;
+            this.ByTextBox.Name = "ByTextBox";
+            this.ByTextBox.Size = new System.Drawing.Size(58, 20);
+            this.ByTextBox.TabIndex = 3;
+            // 
+            // BxTextBox
+            // 
+            this.BxTextBox.Location = new System.Drawing.Point(31, 61);
+            this.BxTextBox.MaxLength = 3;
+            this.BxTextBox.Name = "BxTextBox";
+            this.BxTextBox.Size = new System.Drawing.Size(58, 20);
+            this.BxTextBox.TabIndex = 2;
+            // 
+            // AyTextBox
+            // 
+            this.AyTextBox.Location = new System.Drawing.Point(139, 35);
+            this.AyTextBox.MaxLength = 3;
+            this.AyTextBox.Name = "AyTextBox";
+            this.AyTextBox.Size = new System.Drawing.Size(58, 20);
+            this.AyTextBox.TabIndex = 1;
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.tabControl1);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.label7);
@@ -202,7 +203,6 @@
             this.DyTextBox.Name = "DyTextBox";
             this.DyTextBox.Size = new System.Drawing.Size(58, 20);
             this.DyTextBox.TabIndex = 3;
-            this.DyTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.DyTextBox_KeyPress);
             // 
             // DxTextBox
             // 
@@ -211,7 +211,6 @@
             this.DxTextBox.Name = "DxTextBox";
             this.DxTextBox.Size = new System.Drawing.Size(58, 20);
             this.DxTextBox.TabIndex = 2;
-            this.DxTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.DxTextBox_KeyPress);
             // 
             // CyTextBox
             // 
@@ -220,7 +219,6 @@
             this.CyTextBox.Name = "CyTextBox";
             this.CyTextBox.Size = new System.Drawing.Size(58, 20);
             this.CyTextBox.TabIndex = 1;
-            this.CyTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.CyTextBox_KeyPress);
             // 
             // CxTextBox
             // 
@@ -229,7 +227,6 @@
             this.CxTextBox.Name = "CxTextBox";
             this.CxTextBox.Size = new System.Drawing.Size(58, 20);
             this.CxTextBox.TabIndex = 0;
-            this.CxTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.CxTextBox_KeyPress);
             // 
             // button1
             // 
@@ -244,11 +241,44 @@
             // 
             // pictureBox1
             // 
+            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox1.Location = new System.Drawing.Point(12, 189);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(815, 660);
             this.pictureBox1.TabIndex = 10;
             this.pictureBox1.TabStop = false;
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Location = new System.Drawing.Point(243, 115);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(200, 100);
+            this.tabControl1.TabIndex = 8;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(192, 74);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "tabPage1";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(192, 74);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "tabPage2";
+            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -261,11 +291,14 @@
             this.Controls.Add(this.groupBox1);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Click += new System.EventHandler(this.Form1_Click);
+            this.Resize += new System.EventHandler(this.Form1_Resize);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.tabControl1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -292,6 +325,9 @@
         private System.Windows.Forms.TextBox CxTextBox;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
     }
 }
 
