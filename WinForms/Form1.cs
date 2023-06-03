@@ -21,8 +21,6 @@ namespace WinForms
             B = new MyPoint(0,0);
             C = new MyPoint(0,0);
             D = new MyPoint(0, 0);
-
-            Draw();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -30,7 +28,8 @@ namespace WinForms
             if (!ValidateData())
                 return;
             
-            A.X = decimal.Parse(AyTextBox.Text);
+            A.X = decimal.Parse(AxTextBox.Text);
+            A.Y = decimal.Parse(AyTextBox.Text);
             B.X = decimal.Parse(BxTextBox.Text);
             B.Y = decimal.Parse(ByTextBox.Text);
             C.X = decimal.Parse(CxTextBox.Text);
