@@ -17,5 +17,10 @@ namespace WinForms
             this.X = X;
             this.Y = Y;
         }
+
+        public MyPoint()
+        {
+            
+        }
     }
 }

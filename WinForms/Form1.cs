@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace WinForms
@@ -53,6 +54,8 @@ namespace WinForms
             int rozpietoscX = 20;
             int rozpietoscY = 20;
 
+
+            g.Clear(Color.White);
             for (int y = 0; y < pictureBox1.Height; y += rozpietoscY)
             {
                 g.DrawLine(Pens.Black, 0, y, pictureBox1.Width, y);
@@ -61,6 +64,108 @@ namespace WinForms
             for (int x = 0; x < pictureBox1.Width; x += rozpietoscX)
             {
                 g.DrawLine(Pens.Black, x, 0, x, pictureBox1.Height);
+            }
+
+
+            var currentWidth = pictureBox1.Width;
+            var currentHeight = pictureBox1.Height;
+
+            // Jak punkty poza skalą planszy, to trzeba zrobic cos w stylu skalowania
+
+            var drawA = new MyPoint(0, 0);
+            var drawB = new MyPoint(0, 0);
+            var drawC = new MyPoint(0, 0);
+            var drawD = new MyPoint(0, 0);
+
+            //Skalowanie "w góre"
+
+            var k = 1.1m;
+            var l = 0.9m;
+
+            while (true)
+            {
+                if (A.X * k > currentWidth || A.Y * k > currentHeight
+                                           || B.X * k > currentWidth || B.Y * k > currentHeight
+                                           || C.X * k > currentWidth || C.Y * k > currentHeight
+                                           || D.X * k > currentWidth || D.Y * k > currentHeight
+                   )
+                {
+                    A.X = l * A.X;
+                    B.X = l * B.X;
+                    C.X = l * C.X;
+                    D.X = l * D.X;
+
+                    A.Y = l * A.Y;
+                    B.Y = l * B.Y;
+                    C.Y = l * C.Y;
+                    D.Y = l * D.Y;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            
+
+            // Skalowanie "w dół"
+            if (A.X > currentWidth || A.Y > currentHeight 
+            || B.X > currentWidth || B.Y > currentHeight
+            || C.X > currentWidth || C.Y > currentHeight
+            || D.X > currentWidth || D.Y > currentHeight
+                )
+            {
+                var factors = new List<decimal>();
+                var scaleH1 = A.X / currentWidth;
+                factors.Add(scaleH1);
+                var scaleW1 = A.Y / currentHeight;
+                factors.Add(scaleW1);
+
+                var scaleH2 = B.X / currentWidth;
+                factors.Add(scaleH2);
+                var scaleW2 = B.Y / currentHeight;
+                factors.Add(scaleW2);
+
+                var scaleH3 = C.X / currentWidth;
+                factors.Add(scaleH3);
+                var scaleW3 = C.Y / currentHeight;
+                factors.Add(scaleW3);
+
+                var scaleH4 = D.X / currentWidth;
+                factors.Add(scaleH4);
+                var scaleW4 = D.Y / currentHeight;
+                factors.Add(scaleW4);
+
+                var factorToApply = factors.Max();
+
+                drawA = new MyPoint
+                {
+                    X = A.X / factorToApply,
+                    Y = A.Y / factorToApply
+                };
+                drawB = new MyPoint
+                {
+                    X = B.X / factorToApply,
+                    Y = B.Y / factorToApply
+                };
+                drawC = new MyPoint
+                {
+                    X = C.X / factorToApply,
+                    Y = C.Y / factorToApply
+                };
+                drawD = new MyPoint
+                {
+                    X = D.X / factorToApply,
+                    Y = D.Y / factorToApply
+                };
+            }
+            else
+            {
+                // Narysowanie prostej między punktami A i B
+                Pen linePen1 = new Pen(Color.Red, 5);
+                Pen linePen2 = new Pen(Color.Green, 5);
+
+                g.DrawLine(linePen1, (float) A.X, currentHeight - (float)A.Y, (float)B.X, currentHeight - (float)B.Y);
+                g.DrawLine(linePen2, (float) C.X, currentHeight - (float)C.Y, (float)D.X, currentHeight - (float)D.Y);
             }
         }
 

@@ -9,6 +9,37 @@ namespace WinForms
     public interface IInsertionController
     {
         bool CzySiePrzecinaja(MyPoint A, MyPoint B, MyPoint C, MyPoint D);
+        /// <summary>
+        /// Wywalamy minusy, bo jak mamy niby je narysowac...
+        /// </summary>
+        /// <param name="A"></param>
+        /// <param name="B"></param>
+        /// <param name="C"></param>
+        /// <param name="D"></param>
+        /// <returns></returns>
+        MyPoint ScaleReduceMinusNumbers(MyPoint A, MyPoint B, MyPoint C, MyPoint D);
+        /// <summary>
+        /// Zwiekszamy skale zeby ktos nie podal punktu P = (1,2)... nie narysujemy czegos takiego ;p
+        /// </summary>
+        /// <param name="A"></param>
+        /// <param name="B"></param>
+        /// <param name="C"></param>
+        /// <param name="D"></param>
+        /// <param name="w"></param>
+        /// <param name="h"></param>
+        /// <returns></returns>
+        MyPoint ScaleIncreasePoints(MyPoint A, MyPoint B, MyPoint C, MyPoint D, double w, double h);
+        /// <summary>
+        /// Nie narysujemy cos w stylu P = (999999,22222), więc skalowanie w dół
+        /// </summary>
+        /// <param name="A"></param>
+        /// <param name="B"></param>
+        /// <param name="C"></param>
+        /// <param name="D"></param>
+        /// <param name="w"></param>
+        /// <param name="h"></param>
+        /// <returns></returns>
+        MyPoint ScaleDicreasePoints(MyPoint A, MyPoint B, MyPoint C, MyPoint D, double w, double h);
     }
 
     public class InsertionContoller : IInsertionController
@@ -48,5 +79,24 @@ namespace WinForms
             return false;
         }
 
+        public MyPoint ScaleReduceMinusNumbers(MyPoint A, MyPoint B, MyPoint C, MyPoint D)
+        {
+            throw new NotImplementedException();
+        }
+
+        public MyPoint ScaleIncreasePoints(MyPoint A, MyPoint B, MyPoint C, MyPoint D, double w, double h)
+        {
+            throw new NotImplementedException();
+        }
+
+        public MyPoint ScaleDicreasePoints(MyPoint A, MyPoint B, MyPoint C, MyPoint D, double w, double h)
+        {
+            throw new NotImplementedException();
+        }
+
+        public MyPoint Scale(MyPoint A, MyPoint B, MyPoint C, MyPoint D)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
