@@ -110,7 +110,7 @@ namespace WinForms.Controllers
             for (int i = 0; i < points.Count; i++)
             {
                 points[i].X = (points[i].X / scaleRatioX) * 0.99;
-                points[i].Y = (points[i].X / scaleRatioY) * 0.99;
+                points[i].Y = (points[i].Y / scaleRatioY) * 0.99;
             }
 
             return points;
@@ -152,8 +152,8 @@ namespace WinForms.Controllers
 
             for (int i = 0; i < points.Count; i++)
             {
-                points[i].X = (maxX / scaleRatioX) * 0.99;
-                points[i].Y = (maxY / scaleRatioY) * 0.99;
+                points[i].X = (points[i].X / scaleRatioX) * 0.99;
+                points[i].Y = (points[i].Y / scaleRatioY) * 0.99;
             }
 
             return points;
