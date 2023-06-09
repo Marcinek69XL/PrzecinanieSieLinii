@@ -26,17 +26,19 @@ namespace WinForms
             _insertionController = new InsertionContoller();
             _scaleController = new ScaleController();
 
-            A = new MyPoint(0,0);
-            B = new MyPoint(0,0);
-            C = new MyPoint(0,0);
-            D = new MyPoint(0, 0);
+            A = null;
+            B = null;
+            C = null;
+            D = null;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             if (!ValidateData())
                 return;
-            
+
+            InitPoints();
+
             A.X = double.Parse(AxTextBox.Text);
             A.Y = double.Parse(AyTextBox.Text);
             B.X = double.Parse(BxTextBox.Text);
@@ -56,8 +58,19 @@ namespace WinForms
                 CustomMessageBox.Info("Linie nie przecinają się");
         }
 
+        private void InitPoints()
+        {
+            A = new MyPoint();
+            B = new MyPoint();
+            C = new MyPoint();
+            D = new MyPoint();
+        }
+
         private void Draw()
         {
+            if (A == null || B == null || C == null || D == null)
+                return;;
+
             Graphics g = pictureBox1.CreateGraphics();
             int rozpietoscX = 20;
             int rozpietoscY = 20;
@@ -114,6 +127,13 @@ namespace WinForms
             g.DrawLine(linePen1, (float)drawA.X, (float) drawA.Y, (float)drawB.X, (float)drawB.Y);
             g.DrawLine(linePen2, (float)drawC.X, (float)drawC.Y, (float)drawD.X, (float)drawD.Y);
 
+            Console.WriteLine(string.Format("A=({0};{1})", (int)drawA.X, (int)drawA.Y));
+            Console.WriteLine(string.Format("B=({0};{1})", (int)drawB.X, (int)drawB.Y));
+            Console.WriteLine(string.Format("C=({0};{1})", (int)drawC.X, (int)drawC.Y));
+            Console.WriteLine(string.Format("D=({0};{1})", (int)drawD.X, (int)drawD.Y));
+            Console.WriteLine(String.Format("H = {0}", currentHeight));
+            Console.WriteLine(String.Format("W = {0}", currentWidth));
+            Console.WriteLine();
 
             labelA?.Dispose();
             labelB?.Dispose();
@@ -206,7 +226,7 @@ namespace WinForms
         {
             AxTextBox.Text = "552";
             BxTextBox.Text = "42";
-            CxTextBox.Text = "55";
+            CxTextBox.Text = "551";
             DxTextBox.Text = "222";
             AyTextBox.Text = "79";
             ByTextBox.Text = "340";
