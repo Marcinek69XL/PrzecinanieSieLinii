@@ -10,16 +10,16 @@ namespace WinForms
 {
     public static class Extensions
     {
-        public static bool TryToDecimal(this TextBox tb, out decimal _result)
+        public static bool TryTodouble(this TextBox tb, out double _result)
         {
             if (string.IsNullOrEmpty(tb.Text))
             {
                 tb.BackColor = Color.Red;
-                _result = Decimal.Zero;;
+                _result = 0;
                 return false;
             }
 
-            if (decimal.TryParse(tb.Text, out decimal result))
+            if (double.TryParse(tb.Text, out double result))
             {
                 tb.BackColor = Color.White;
                 _result = result;
@@ -27,7 +27,7 @@ namespace WinForms
             }
             else
             {
-                _result = Decimal.Zero;
+                _result = 0;
                 return false;
             }
         }

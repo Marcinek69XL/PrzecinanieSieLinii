@@ -13,7 +13,7 @@ namespace WinForms
 
     public class InsertionContoller : IInsertionController
     {
-        private decimal IloczynWektorowy(decimal Xa, decimal Xb, decimal Ya, decimal Yb, decimal Za, decimal Zb)
+        private double IloczynWektorowy(double Xa, double Xb, double Ya, double Yb, double Za, double Zb)
         {
             var x1 = Za - Xa;
             var y1 = Zb - Xb;
@@ -24,7 +24,7 @@ namespace WinForms
             return (x1 * y2) - (x2 * y1);
         }
 
-        private bool Sprawdz(decimal Xa, decimal Xb, decimal Ya, decimal Yb, decimal Za, decimal Zb)
+        private bool Sprawdz(double Xa, double Xb, double Ya, double Yb, double Za, double Zb)
         {
             return Math.Min(Xa, Ya) <= Za && Zb <= Math.Max(Xa, Ya) && Math.Min(Xb, Yb) <= Zb && Zb <= Math.Max(Xb, Yb);
         }
@@ -47,6 +47,5 @@ namespace WinForms
 
             return false;
         }
-
     }
 }
