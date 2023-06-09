@@ -1,3 +1,4 @@
+using FluentAssertions;
 using WinForms;
 
 namespace Test
@@ -9,8 +10,8 @@ namespace Test
         [InlineData(1, 1, 3, 3, 4, 4, 6, 6, false)]  // Nieprzecinaj¹ce siê proste
         [InlineData(1, 1, 2, 2, 2, 2, 3, 3, false)]  // Wspó³liniowe proste
         void CheckIntersection_ShouldReturnCorrectResult(
-            decimal x1, decimal y1, decimal x2, decimal y2,
-            decimal x3, decimal y3, decimal x4, decimal y4,
+            double x1, double y1, double x2, double y2,
+            double x3, double y3, double x4, double y4,
             bool expectedResult)
         {
             //act
@@ -23,7 +24,7 @@ namespace Test
             var res = new InsertionContoller().CzySiePrzecinaja(a, b, c, d);
 
             //assert
-            Assert.Equal(expectedResult, res);
+            res.Should().Be(expectedResult);
         }
     }
 }

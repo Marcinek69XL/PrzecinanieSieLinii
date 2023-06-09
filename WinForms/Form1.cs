@@ -2,21 +2,29 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Windows.Forms;
+using WinForms.Controllers;
+using Label = System.Windows.Forms.Label;
 
 namespace WinForms
 {
     public partial class Form1 : Form
     {
         private MyPoint A, B, C, D;
+        Label labelA, labelB, labelC, labelD;
 
-        private IInsertionController _controller;
+        private IInsertionController _insertionController;
+        private IScaleController _scaleController;
 
         public Form1()
         {
             InitializeComponent();
 
-            _controller = new InsertionContoller();
+            StartUpData();
+
+            _insertionController = new InsertionContoller();
+            _scaleController = new ScaleController();
 
             A = new MyPoint(0,0);
             B = new MyPoint(0,0);
@@ -29,18 +37,18 @@ namespace WinForms
             if (!ValidateData())
                 return;
             
-            A.X = decimal.Parse(AxTextBox.Text);
-            A.Y = decimal.Parse(AyTextBox.Text);
-            B.X = decimal.Parse(BxTextBox.Text);
-            B.Y = decimal.Parse(ByTextBox.Text);
-            C.X = decimal.Parse(CxTextBox.Text);
-            C.Y = decimal.Parse(CyTextBox.Text);
-            D.X = decimal.Parse(DxTextBox.Text);
-            D.Y = decimal.Parse(DyTextBox.Text);
+            A.X = double.Parse(AxTextBox.Text);
+            A.Y = double.Parse(AyTextBox.Text);
+            B.X = double.Parse(BxTextBox.Text);
+            B.Y = double.Parse(ByTextBox.Text);
+            C.X = double.Parse(CxTextBox.Text);
+            C.Y = double.Parse(CyTextBox.Text);
+            D.X = double.Parse(DxTextBox.Text);
+            D.Y = double.Parse(DyTextBox.Text);
 
             Draw();
 
-            bool przecinajaSie = _controller.CzySiePrzecinaja(A, B, C, D);
+            bool przecinajaSie = _insertionController.CzySiePrzecinaja(A, B, C, D);
             
             if (przecinajaSie)
                 CustomMessageBox.Info("Linie przecinają się");
@@ -54,6 +62,8 @@ namespace WinForms
             int rozpietoscX = 20;
             int rozpietoscY = 20;
 
+            var currentWidth = pictureBox1.Width;
+            var currentHeight = pictureBox1.Height;
 
             g.Clear(Color.White);
             for (int y = 0; y < pictureBox1.Height; y += rozpietoscY)
@@ -66,107 +76,83 @@ namespace WinForms
                 g.DrawLine(Pens.Black, x, 0, x, pictureBox1.Height);
             }
 
+            float arrowSize = 10;
+            float lineWidth = 5;
 
-            var currentWidth = pictureBox1.Width;
-            var currentHeight = pictureBox1.Height;
+            // Ustawienie grubości linii
+            Pen axisPen = new Pen(Color.Black, lineWidth);
 
-            // Jak punkty poza skalą planszy, to trzeba zrobic cos w stylu skalowania
+            // Początek i koniec osi X
+            PointF startX = new PointF(arrowSize, currentHeight / 2);
+            PointF endX = new PointF(currentWidth - arrowSize, currentHeight / 2);
 
-            var drawA = new MyPoint(0, 0);
-            var drawB = new MyPoint(0, 0);
-            var drawC = new MyPoint(0, 0);
-            var drawD = new MyPoint(0, 0);
+            // Początek i koniec osi Y
+            PointF startY = new PointF(currentWidth / 2, currentHeight - arrowSize);
+            PointF endY = new PointF(currentWidth / 2, arrowSize);
 
-            //Skalowanie "w góre"
+            // Narysuj osie X i Y z grubością linii
+            g.DrawLine(axisPen, startX, endX);
+            g.DrawLine(axisPen, startY, endY);
 
-            var k = 1.1m;
-            var l = 0.9m;
+            // Narysuj strzałki na końcach osi
+            DrawArrow(g, startX, endX, arrowSize, lineWidth);
+            DrawArrow(g, startY, endY, arrowSize, lineWidth);
 
-            while (true)
-            {
-                if (A.X * k > currentWidth || A.Y * k > currentHeight
-                                           || B.X * k > currentWidth || B.Y * k > currentHeight
-                                           || C.X * k > currentWidth || C.Y * k > currentHeight
-                                           || D.X * k > currentWidth || D.Y * k > currentHeight
-                   )
-                {
-                    A.X = l * A.X;
-                    B.X = l * B.X;
-                    C.X = l * C.X;
-                    D.X = l * D.X;
 
-                    A.Y = l * A.Y;
-                    B.Y = l * B.Y;
-                    C.Y = l * C.Y;
-                    D.Y = l * D.Y;
-                }
-                else
-                {
-                    break;
-                }
-            }
-            
 
-            // Skalowanie "w dół"
-            if (A.X > currentWidth || A.Y > currentHeight 
-            || B.X > currentWidth || B.Y > currentHeight
-            || C.X > currentWidth || C.Y > currentHeight
-            || D.X > currentWidth || D.Y > currentHeight
-                )
-            {
-                var factors = new List<decimal>();
-                var scaleH1 = A.X / currentWidth;
-                factors.Add(scaleH1);
-                var scaleW1 = A.Y / currentHeight;
-                factors.Add(scaleW1);
+            var pointsToDraw = _scaleController.ComplexScale(A, B, C, D, currentWidth, currentHeight);
 
-                var scaleH2 = B.X / currentWidth;
-                factors.Add(scaleH2);
-                var scaleW2 = B.Y / currentHeight;
-                factors.Add(scaleW2);
+            var drawA = pointsToDraw[0];
+            var drawB = pointsToDraw[1];
+            var drawC = pointsToDraw[2];
+            var drawD = pointsToDraw[3];
 
-                var scaleH3 = C.X / currentWidth;
-                factors.Add(scaleH3);
-                var scaleW3 = C.Y / currentHeight;
-                factors.Add(scaleW3);
+            // Narysowanie prostej między punktami A i B
+            Pen linePen1 = new Pen(Color.Red, 5);
+            Pen linePen2 = new Pen(Color.Green, 5);
 
-                var scaleH4 = D.X / currentWidth;
-                factors.Add(scaleH4);
-                var scaleW4 = D.Y / currentHeight;
-                factors.Add(scaleW4);
+            g.DrawLine(linePen1, (float)drawA.X, (float) drawA.Y, (float)drawB.X, (float)drawB.Y);
+            g.DrawLine(linePen2, (float)drawC.X, (float)drawC.Y, (float)drawD.X, (float)drawD.Y);
 
-                var factorToApply = factors.Max();
 
-                drawA = new MyPoint
-                {
-                    X = A.X / factorToApply,
-                    Y = A.Y / factorToApply
-                };
-                drawB = new MyPoint
-                {
-                    X = B.X / factorToApply,
-                    Y = B.Y / factorToApply
-                };
-                drawC = new MyPoint
-                {
-                    X = C.X / factorToApply,
-                    Y = C.Y / factorToApply
-                };
-                drawD = new MyPoint
-                {
-                    X = D.X / factorToApply,
-                    Y = D.Y / factorToApply
-                };
-            }
-            else
-            {
-                // Narysowanie prostej między punktami A i B
-                Pen linePen1 = new Pen(Color.Red, 5);
-                Pen linePen2 = new Pen(Color.Green, 5);
+            labelA?.Dispose();
+            labelB?.Dispose();
+            labelC?.Dispose();
+            labelD?.Dispose();
 
-                g.DrawLine(linePen1, (float) A.X, currentHeight - (float)A.Y, (float)B.X, currentHeight - (float)B.Y);
-                g.DrawLine(linePen2, (float) C.X, currentHeight - (float)C.Y, (float)D.X, currentHeight - (float)D.Y);
-            }
+            labelA = new Label();
+            labelA.Text = $"({A.X},{A.Y})";
+
+            labelB = new Label();
+            labelB.Text = $"({B.X},{B.Y})";
+
+            labelC = new Label();
+            labelC.Text = $"({C.X},{C.Y})";
+
+            labelD = new Label();
+            labelD.Text = $"({D.X},{D.Y})";
+
+            var pictureBoxLocX = pictureBox1.Location.X;
+            var pictureBoxLocY = pictureBox1.Location.Y;
+
+            labelA.Location = new Point((int) drawA.X + pictureBoxLocX, (int) drawA.Y + pictureBoxLocY);
+            this.Controls.Add(labelA);
+            labelB.Location = new Point((int)drawB.X + pictureBoxLocX, (int)drawB.Y + pictureBoxLocY);
+            this.Controls.Add(labelB);
+            labelC.Location = new Point((int)drawC.X + pictureBoxLocX, (int)drawC.Y + pictureBoxLocY);
+            this.Controls.Add(labelC);
+            labelD.Location = new Point((int)drawD.X + pictureBoxLocX, (int)drawD.Y + pictureBoxLocY);
+            this.Controls.Add(labelD);
+
+            DrawTransparentText(g, labelA.Text, new Font("Arial", 12), new Rectangle((int) drawA.X, (int)drawA.Y, 100, 30), Color.Black);
+            DrawTransparentText(g, labelB.Text, new Font("Arial", 12), new Rectangle((int)drawB.X, (int)drawB.Y, 100, 30), Color.Black);
+            DrawTransparentText(g, labelC.Text, new Font("Arial", 12), new Rectangle((int)drawC.X, (int)drawC.Y, 100, 30), Color.Black);
+            DrawTransparentText(g, labelD.Text, new Font("Arial", 12), new Rectangle((int)drawD.X, (int)drawD.Y, 100, 30), Color.Black);
+
+            //labelA.BringToFront();
+            //labelB.BringToFront();
+            //labelC.BringToFront();
+            //labelD.BringToFront();
         }
 
         private bool ValidateData()
@@ -186,7 +172,7 @@ namespace WinForms
             var ok = true;
             foreach (var control in controls)
             {
-                if (!control.TryToDecimal(out _))
+                if (!control.TryTodouble(out _))
                     ok = false;
             }
 
@@ -215,5 +201,46 @@ namespace WinForms
         {
             Draw();
         }
+
+        private void StartUpData()
+        {
+            AxTextBox.Text = "552";
+            BxTextBox.Text = "42";
+            CxTextBox.Text = "55";
+            DxTextBox.Text = "222";
+            AyTextBox.Text = "79";
+            ByTextBox.Text = "340";
+            CyTextBox.Text = "155";
+            DyTextBox.Text = "444";
+        }
+
+
+        private void DrawArrow(Graphics graphics, PointF startPoint, PointF endPoint, float arrowSize, float lineWidth)
+        {
+            float angle = (float)Math.Atan2(endPoint.Y - startPoint.Y, endPoint.X - startPoint.X);
+            PointF[] arrowPoints = new PointF[3];
+            arrowPoints[0] = new PointF(endPoint.X - arrowSize * (float)Math.Cos(angle - Math.PI / 6),
+                endPoint.Y - arrowSize * (float)Math.Sin(angle - Math.PI / 6));
+            arrowPoints[1] = endPoint;
+            arrowPoints[2] = new PointF(endPoint.X - arrowSize * (float)Math.Cos(angle + Math.PI / 6),
+                endPoint.Y - arrowSize * (float)Math.Sin(angle + Math.PI / 6));
+
+            using (Pen arrowPen = new Pen(Color.Black, lineWidth))
+            {
+                graphics.DrawLines(arrowPen, arrowPoints);
+            }
+        }
+
+        private void DrawTransparentText(Graphics graphics, string text, Font font, Rectangle bounds, Color textColor)
+        {
+            TextFormatFlags flags = TextFormatFlags.VerticalCenter | TextFormatFlags.HorizontalCenter |
+                                    TextFormatFlags.SingleLine | TextFormatFlags.NoPadding;
+
+            using (SolidBrush brush = new SolidBrush(textColor))
+            {
+                TextRenderer.DrawText(graphics, text, font, bounds, textColor, flags);
+            }
+        }
+
     }
 }

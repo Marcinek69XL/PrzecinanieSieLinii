@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace WinForms
 {
-    public class MyPoint
+    public class MyPoint : ICloneable
     {
-        public decimal X { get; set; }
-        public decimal Y { get; set; }
+        public double X { get; set; }
+        public double Y { get; set; }
 
 
-        public MyPoint(decimal X, decimal Y)
+        public MyPoint(double X, double Y)
         {
             this.X = X;
             this.Y = Y;
@@ -21,6 +21,11 @@ namespace WinForms
         public MyPoint()
         {
             
+        }
+
+        public object Clone()
+        {
+            return MemberwiseClone();
         }
     }
 }
