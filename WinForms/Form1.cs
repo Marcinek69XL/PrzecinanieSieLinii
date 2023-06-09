@@ -11,8 +11,83 @@ namespace WinForms
 {
     public partial class Form1 : Form
     {
+        static class CheckBoxState
+        {
+            internal static readonly string On = "Ukryj";
+            internal static readonly string Off = "Pokaż";
+        }
+
         private MyPoint A, B, C, D;
         Label labelA, labelB, labelC, labelD;
+
+        /// <summary>
+        /// Nie uzywaj do odczytu, uzyj propercje
+        /// </summary>
+        private Color? _colorLine1;
+        private Color ColorLine1
+        {
+            get
+            {
+                if (_colorLine1 == null)
+                    return Color.Black;
+                return _colorLine1.Value;
+            }
+            set
+            {
+                _colorLine1 = value;
+            }
+        }
+        /// <summary>
+        /// Nie uzywaj do odczytu, uzyj propercje
+        /// </summary>
+        private Color? _colorLine2;
+        private Color ColorLine2
+        {
+            get
+            {
+                if (_colorLine2 == null)
+                    return Color.Black;
+                return _colorLine2.Value;
+            }
+            set
+            {
+                _colorLine2 = value;
+            }
+        }
+
+        /// <summary>
+        /// Nie uzywaj do odczytu, uzyj propercje
+        /// </summary>
+        private Color? _colorAxis;
+        private Color ColorAxis 
+        {
+            get
+            {
+                if (_colorAxis == null)
+                    return Color.Black;
+                return _colorAxis.Value;
+            }
+        }
+
+        /// <summary>
+        /// Nie uzywaj do odczytu, uzyj propercje
+        /// </summary>
+        private Color? _colorNet;
+        private Color ColorNet
+        {
+            get
+            {
+                if (_colorNet == null)
+                    return Color.Black;
+                else
+                    return _colorNet.Value;
+            }
+        }
+
+        private float _line1Width;
+        private float _line2Width;
+        private float _axisWidth;
+        private float _netWidth;
 
         private IInsertionController _insertionController;
         private IScaleController _scaleController;
@@ -79,39 +154,19 @@ namespace WinForms
             var currentHeight = pictureBox1.Height;
 
             g.Clear(Color.White);
+
+            var pen = new Pen(ColorNet);
             for (int y = 0; y < pictureBox1.Height; y += rozpietoscY)
             {
-                g.DrawLine(Pens.Black, 0, y, pictureBox1.Width, y);
+                g.DrawLine(pen, 0, y, pictureBox1.Width, y);
             }
 
             for (int x = 0; x < pictureBox1.Width; x += rozpietoscX)
             {
-                g.DrawLine(Pens.Black, x, 0, x, pictureBox1.Height);
+                g.DrawLine(pen, x, 0, x, pictureBox1.Height);
             }
 
-            float arrowSize = 10;
-            float lineWidth = 5;
-
-            // Ustawienie grubości linii
-            Pen axisPen = new Pen(Color.Black, lineWidth);
-
-            // Początek i koniec osi X
-            PointF startX = new PointF(arrowSize, currentHeight / 2);
-            PointF endX = new PointF(currentWidth - arrowSize, currentHeight / 2);
-
-            // Początek i koniec osi Y
-            PointF startY = new PointF(currentWidth / 2, currentHeight - arrowSize);
-            PointF endY = new PointF(currentWidth / 2, arrowSize);
-
-            // Narysuj osie X i Y z grubością linii
-            g.DrawLine(axisPen, startX, endX);
-            g.DrawLine(axisPen, startY, endY);
-
-            // Narysuj strzałki na końcach osi
-            DrawArrow(g, startX, endX, arrowSize, lineWidth);
-            DrawArrow(g, startY, endY, arrowSize, lineWidth);
-
-
+            DrawAxis(g, ColorAxis);
 
             var pointsToDraw = _scaleController.ComplexScale(A, B, C, D, currentWidth, currentHeight);
 
@@ -121,8 +176,8 @@ namespace WinForms
             var drawD = pointsToDraw[3];
 
             // Narysowanie prostej między punktami A i B
-            Pen linePen1 = new Pen(Color.Red, 5);
-            Pen linePen2 = new Pen(Color.Green, 5);
+            Pen linePen1 = new Pen(ColorLine1, _line1Width);
+            Pen linePen2 = new Pen(ColorLine2, _line2Width);
 
             g.DrawLine(linePen1, (float)drawA.X, (float) drawA.Y, (float)drawB.X, (float)drawB.Y);
             g.DrawLine(linePen2, (float)drawC.X, (float)drawC.Y, (float)drawD.X, (float)drawD.Y);
@@ -164,7 +219,7 @@ namespace WinForms
             labelD.Location = new Point((int)drawD.X + pictureBoxLocX, (int)drawD.Y + pictureBoxLocY);
             this.Controls.Add(labelD);
 
-            DrawTransparentText(g, labelA.Text, new Font("Arial", 12), new Rectangle((int) drawA.X, (int)drawA.Y, 100, 30), Color.Black);
+            DrawTransparentText(g, labelA.Text, new Font("Arial", 12), new Rectangle((int)drawA.X, (int)drawA.Y, 100, 30), Color.Black);
             DrawTransparentText(g, labelB.Text, new Font("Arial", 12), new Rectangle((int)drawB.X, (int)drawB.Y, 100, 30), Color.Black);
             DrawTransparentText(g, labelC.Text, new Font("Arial", 12), new Rectangle((int)drawC.X, (int)drawC.Y, 100, 30), Color.Black);
             DrawTransparentText(g, labelD.Text, new Font("Arial", 12), new Rectangle((int)drawD.X, (int)drawD.Y, 100, 30), Color.Black);
@@ -173,6 +228,98 @@ namespace WinForms
             //labelB.BringToFront();
             //labelC.BringToFront();
             //labelD.BringToFront();
+        }
+
+        private void DrawAxis(Graphics g, Color axisColor)
+        {
+            float arrowSize = 10;
+            float lineWidth = _axisWidth;
+            var currentHeight = pictureBox1.Height;
+            var currentWidth = pictureBox1.Width;
+
+            // Ustawienie grubości linii
+            Pen axisPen = new Pen(axisColor, lineWidth);
+
+            // Początek i koniec osi X
+            PointF startX = new PointF(arrowSize, currentHeight / 2);
+            PointF endX = new PointF(currentWidth - arrowSize, currentHeight / 2);
+
+            // Początek i koniec osi Y
+            PointF startY = new PointF(currentWidth / 2, currentHeight - arrowSize);
+            PointF endY = new PointF(currentWidth / 2, arrowSize);
+
+            // Narysuj osie X i Y z grubością linii
+            g.DrawLine(axisPen, startX, endX);
+            g.DrawLine(axisPen, startY, endY);
+
+            // Narysuj strzałki na końcach osi
+            DrawArrow(g, startX, endX, arrowSize, lineWidth, ColorAxis);
+            DrawArrow(g, startY, endY, arrowSize, lineWidth, ColorAxis);
+        }
+
+        private void btnColor_Click(object sender, EventArgs e)
+        {
+            if (colorDialog1.ShowDialog() == DialogResult.OK)
+            {
+                var btn = sender as Button;
+                var color = btn.BackColor = colorDialog1.Color;
+
+                if (btn.Name == "btnColor1")
+                    _colorLine1 = color;
+                else if (btn.Name == "btnColor2")
+                    _colorLine2 = color;
+                else if (btn.Name == "btnColorNet")
+                    _colorNet = color;
+                else
+                    _colorAxis = color;
+
+                // Sprawdzenie jasności koloru tła
+                var brightness = (color.R + color.G + color.B) / 3;
+
+                // Ustawienie koloru napisu na etykiecie
+                if (brightness < 128) // Kolor tła jest ciemny
+                    btn.ForeColor = Color.White;
+                else // Kolor tła jest jasny
+                    btn.ForeColor = Color.Black;
+
+                Draw();
+            }
+        }
+
+        private void trackBar1_ValueChanged(object sender, EventArgs e)
+        {
+            _line1Width = trackBar1.Value;
+            Draw();
+        }
+
+        private void trackBar2_ValueChanged(object sender, EventArgs e)
+        {
+            _line2Width = trackBar2.Value;
+            Draw();
+        }
+
+        private void trackBarAxis_ValueChanged(object sender, EventArgs e)
+        {
+            _axisWidth = trackBarAxis.Value;
+            Draw();
+        }
+
+        private void trackBarNet_Scroll(object sender, EventArgs e)
+        {
+            _netWidth = trackBarNet.Value;
+            Draw();
+        }
+
+        private void cb_Click(object sender, EventArgs e)
+        {
+            var cb = sender as CheckBox;
+
+            cb.Checked = !cb.Checked;
+
+            if (cb.CheckState == CheckState.Checked)
+                cb.Text = CheckBoxState.On;
+            else
+                cb.Text = CheckBoxState.Off;
         }
 
         private bool ValidateData()
@@ -235,7 +382,7 @@ namespace WinForms
         }
 
 
-        private void DrawArrow(Graphics graphics, PointF startPoint, PointF endPoint, float arrowSize, float lineWidth)
+        private void DrawArrow(Graphics graphics, PointF startPoint, PointF endPoint, float arrowSize, float lineWidth, Color axisColor)
         {
             float angle = (float)Math.Atan2(endPoint.Y - startPoint.Y, endPoint.X - startPoint.X);
             PointF[] arrowPoints = new PointF[3];
@@ -245,7 +392,7 @@ namespace WinForms
             arrowPoints[2] = new PointF(endPoint.X - arrowSize * (float)Math.Cos(angle + Math.PI / 6),
                 endPoint.Y - arrowSize * (float)Math.Sin(angle + Math.PI / 6));
 
-            using (Pen arrowPen = new Pen(Color.Black, lineWidth))
+            using (Pen arrowPen = new Pen(axisColor, lineWidth))
             {
                 graphics.DrawLines(arrowPen, arrowPoints);
             }
