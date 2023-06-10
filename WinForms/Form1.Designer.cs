@@ -52,6 +52,13 @@
             this.button1 = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.panelLineSaveSettings = new System.Windows.Forms.Panel();
+            this.rbOdcNo = new System.Windows.Forms.RadioButton();
+            this.rbOdcYes = new System.Windows.Forms.RadioButton();
+            this.lbOdc = new System.Windows.Forms.Label();
+            this.rbNo = new System.Windows.Forms.RadioButton();
+            this.rbYes = new System.Windows.Forms.RadioButton();
+            this.label13 = new System.Windows.Forms.Label();
             this.cbNet = new System.Windows.Forms.CheckBox();
             this.cbAxis = new System.Windows.Forms.CheckBox();
             this.cbLine2 = new System.Windows.Forms.CheckBox();
@@ -76,6 +83,7 @@
             this.tabControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox3.SuspendLayout();
+            this.panelLineSaveSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarNet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarAxis)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
@@ -299,7 +307,7 @@
             this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox1.Location = new System.Drawing.Point(12, 229);
+            this.pictureBox1.Location = new System.Drawing.Point(21, 233);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(1029, 599);
             this.pictureBox1.TabIndex = 10;
@@ -307,6 +315,11 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox3.Controls.Add(this.panelLineSaveSettings);
+            this.groupBox3.Controls.Add(this.rbNo);
+            this.groupBox3.Controls.Add(this.rbYes);
+            this.groupBox3.Controls.Add(this.label13);
             this.groupBox3.Controls.Add(this.cbNet);
             this.groupBox3.Controls.Add(this.cbAxis);
             this.groupBox3.Controls.Add(this.cbLine2);
@@ -323,21 +336,95 @@
             this.groupBox3.Controls.Add(this.label10);
             this.groupBox3.Controls.Add(this.btnColor1);
             this.groupBox3.Controls.Add(this.label9);
-            this.groupBox3.Location = new System.Drawing.Point(577, 12);
+            this.groupBox3.Location = new System.Drawing.Point(627, 12);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(414, 185);
+            this.groupBox3.Size = new System.Drawing.Size(414, 208);
             this.groupBox3.TabIndex = 9;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Ustawienia";
+            // 
+            // panelLineSaveSettings
+            // 
+            this.panelLineSaveSettings.Controls.Add(this.rbOdcNo);
+            this.panelLineSaveSettings.Controls.Add(this.rbOdcYes);
+            this.panelLineSaveSettings.Controls.Add(this.lbOdc);
+            this.panelLineSaveSettings.Location = new System.Drawing.Point(192, 173);
+            this.panelLineSaveSettings.Name = "panelLineSaveSettings";
+            this.panelLineSaveSettings.Size = new System.Drawing.Size(200, 29);
+            this.panelLineSaveSettings.TabIndex = 31;
+            // 
+            // rbOdcNo
+            // 
+            this.rbOdcNo.AutoSize = true;
+            this.rbOdcNo.Location = new System.Drawing.Point(153, 5);
+            this.rbOdcNo.Name = "rbOdcNo";
+            this.rbOdcNo.Size = new System.Drawing.Size(41, 17);
+            this.rbOdcNo.TabIndex = 30;
+            this.rbOdcNo.TabStop = true;
+            this.rbOdcNo.Text = "Nie";
+            this.rbOdcNo.UseVisualStyleBackColor = true;
+            // 
+            // rbOdcYes
+            // 
+            this.rbOdcYes.AutoSize = true;
+            this.rbOdcYes.Checked = true;
+            this.rbOdcYes.Location = new System.Drawing.Point(103, 5);
+            this.rbOdcYes.Name = "rbOdcYes";
+            this.rbOdcYes.Size = new System.Drawing.Size(44, 17);
+            this.rbOdcYes.TabIndex = 29;
+            this.rbOdcYes.TabStop = true;
+            this.rbOdcYes.Text = "Tak";
+            this.rbOdcYes.UseVisualStyleBackColor = true;
+            // 
+            // lbOdc
+            // 
+            this.lbOdc.AutoSize = true;
+            this.lbOdc.Location = new System.Drawing.Point(12, 7);
+            this.lbOdc.Name = "lbOdc";
+            this.lbOdc.Size = new System.Drawing.Size(85, 13);
+            this.lbOdc.TabIndex = 28;
+            this.lbOdc.Text = "Również odcinki";
+            // 
+            // rbNo
+            // 
+            this.rbNo.AutoSize = true;
+            this.rbNo.Location = new System.Drawing.Point(145, 175);
+            this.rbNo.Name = "rbNo";
+            this.rbNo.Size = new System.Drawing.Size(41, 17);
+            this.rbNo.TabIndex = 27;
+            this.rbNo.Text = "Nie";
+            this.rbNo.UseVisualStyleBackColor = true;
+            this.rbNo.CheckedChanged += new System.EventHandler(this.rb_CheckedChanged);
+            // 
+            // rbYes
+            // 
+            this.rbYes.AutoSize = true;
+            this.rbYes.Checked = true;
+            this.rbYes.Location = new System.Drawing.Point(95, 175);
+            this.rbYes.Name = "rbYes";
+            this.rbYes.Size = new System.Drawing.Size(44, 17);
+            this.rbYes.TabIndex = 26;
+            this.rbYes.TabStop = true;
+            this.rbYes.Text = "Tak";
+            this.rbYes.UseVisualStyleBackColor = true;
+            this.rbYes.CheckedChanged += new System.EventHandler(this.rb_CheckedChanged);
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(17, 177);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(62, 13);
+            this.label13.TabIndex = 25;
+            this.label13.Text = "Zapis stanu";
             // 
             // cbNet
             // 
             this.cbNet.AutoSize = true;
             this.cbNet.Location = new System.Drawing.Point(327, 139);
             this.cbNet.Name = "cbNet";
-            this.cbNet.Size = new System.Drawing.Size(50, 17);
+            this.cbNet.Size = new System.Drawing.Size(15, 14);
             this.cbNet.TabIndex = 24;
-            this.cbNet.Text = "Ukryj";
             this.cbNet.UseVisualStyleBackColor = true;
             this.cbNet.Click += new System.EventHandler(this.cb_Click);
             // 
@@ -346,9 +433,8 @@
             this.cbAxis.AutoSize = true;
             this.cbAxis.Location = new System.Drawing.Point(327, 103);
             this.cbAxis.Name = "cbAxis";
-            this.cbAxis.Size = new System.Drawing.Size(50, 17);
+            this.cbAxis.Size = new System.Drawing.Size(15, 14);
             this.cbAxis.TabIndex = 23;
-            this.cbAxis.Text = "Ukryj";
             this.cbAxis.UseVisualStyleBackColor = true;
             this.cbAxis.Click += new System.EventHandler(this.cb_Click);
             // 
@@ -357,9 +443,8 @@
             this.cbLine2.AutoSize = true;
             this.cbLine2.Location = new System.Drawing.Point(327, 59);
             this.cbLine2.Name = "cbLine2";
-            this.cbLine2.Size = new System.Drawing.Size(50, 17);
+            this.cbLine2.Size = new System.Drawing.Size(15, 14);
             this.cbLine2.TabIndex = 22;
-            this.cbLine2.Text = "Ukryj";
             this.cbLine2.UseVisualStyleBackColor = true;
             this.cbLine2.Click += new System.EventHandler(this.cb_Click);
             // 
@@ -368,9 +453,8 @@
             this.cbLine1.AutoSize = true;
             this.cbLine1.Location = new System.Drawing.Point(327, 21);
             this.cbLine1.Name = "cbLine1";
-            this.cbLine1.Size = new System.Drawing.Size(50, 17);
+            this.cbLine1.Size = new System.Drawing.Size(15, 14);
             this.cbLine1.TabIndex = 21;
-            this.cbLine1.Text = "Ukryj";
             this.cbLine1.UseVisualStyleBackColor = true;
             this.cbLine1.Click += new System.EventHandler(this.cb_Click);
             // 
@@ -390,7 +474,7 @@
             this.btnColorNet.Name = "btnColorNet";
             this.btnColorNet.Size = new System.Drawing.Size(75, 23);
             this.btnColorNet.TabIndex = 19;
-            this.btnColorNet.Text = "Wybierz";
+            this.btnColorNet.Text = "Kolor";
             this.btnColorNet.UseVisualStyleBackColor = true;
             this.btnColorNet.Click += new System.EventHandler(this.btnColor_Click);
             // 
@@ -409,7 +493,7 @@
             this.btnAxisColor.Name = "btnAxisColor";
             this.btnAxisColor.Size = new System.Drawing.Size(75, 23);
             this.btnAxisColor.TabIndex = 17;
-            this.btnAxisColor.Text = "Wybierz";
+            this.btnAxisColor.Text = "Kolor";
             this.btnAxisColor.UseVisualStyleBackColor = true;
             this.btnAxisColor.Click += new System.EventHandler(this.btnColor_Click);
             // 
@@ -458,7 +542,7 @@
             this.btnColor2.Name = "btnColor2";
             this.btnColor2.Size = new System.Drawing.Size(75, 23);
             this.btnColor2.TabIndex = 12;
-            this.btnColor2.Text = "Wybierz";
+            this.btnColor2.Text = "Kolor";
             this.btnColor2.UseVisualStyleBackColor = true;
             this.btnColor2.Click += new System.EventHandler(this.btnColor_Click);
             // 
@@ -467,9 +551,9 @@
             this.label10.AutoSize = true;
             this.label10.Location = new System.Drawing.Point(17, 64);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(72, 13);
+            this.label10.Size = new System.Drawing.Size(46, 13);
             this.label10.TabIndex = 11;
-            this.label10.Text = "Prosta 2 kolor";
+            this.label10.Text = "Prosta 2";
             // 
             // btnColor1
             // 
@@ -477,7 +561,7 @@
             this.btnColor1.Name = "btnColor1";
             this.btnColor1.Size = new System.Drawing.Size(75, 23);
             this.btnColor1.TabIndex = 10;
-            this.btnColor1.Text = "Wybierz";
+            this.btnColor1.Text = "Kolor";
             this.btnColor1.UseVisualStyleBackColor = true;
             this.btnColor1.Click += new System.EventHandler(this.btnColor_Click);
             // 
@@ -486,9 +570,9 @@
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(17, 25);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(72, 13);
+            this.label9.Size = new System.Drawing.Size(46, 13);
             this.label9.TabIndex = 9;
-            this.label9.Text = "Prosta 1 kolor";
+            this.label9.Text = "Prosta 1";
             // 
             // Form1
             // 
@@ -502,6 +586,7 @@
             this.Controls.Add(this.groupBox1);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Click += new System.EventHandler(this.Form1_Click);
             this.Resize += new System.EventHandler(this.Form1_Resize);
             this.groupBox1.ResumeLayout(false);
@@ -512,6 +597,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.panelLineSaveSettings.ResumeLayout(false);
+            this.panelLineSaveSettings.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarNet)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarAxis)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).EndInit();
@@ -565,6 +652,13 @@
         private System.Windows.Forms.CheckBox cbAxis;
         private System.Windows.Forms.CheckBox cbLine2;
         private System.Windows.Forms.CheckBox cbLine1;
+        private System.Windows.Forms.Panel panelLineSaveSettings;
+        private System.Windows.Forms.RadioButton rbOdcNo;
+        private System.Windows.Forms.RadioButton rbOdcYes;
+        private System.Windows.Forms.Label lbOdc;
+        private System.Windows.Forms.RadioButton rbNo;
+        private System.Windows.Forms.RadioButton rbYes;
+        private System.Windows.Forms.Label label13;
     }
 }
 

@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Windows.Forms;
 using WinForms.Controllers;
+using WinForms.Model;
 using Label = System.Windows.Forms.Label;
 
 namespace WinForms
@@ -13,84 +15,18 @@ namespace WinForms
     {
         static class CheckBoxState
         {
-            internal static readonly string On = "Ukryj";
-            internal static readonly string Off = "Pokaż";
+            internal static readonly string On = "Widoczne";
+            internal static readonly string Off = "Ukryte";
         }
 
         private MyPoint A, B, C, D;
         Label labelA, labelB, labelC, labelD;
 
-        /// <summary>
-        /// Nie uzywaj do odczytu, uzyj propercje
-        /// </summary>
-        private Color? _colorLine1;
-        private Color ColorLine1
-        {
-            get
-            {
-                if (_colorLine1 == null)
-                    return Color.Black;
-                return _colorLine1.Value;
-            }
-            set
-            {
-                _colorLine1 = value;
-            }
-        }
-        /// <summary>
-        /// Nie uzywaj do odczytu, uzyj propercje
-        /// </summary>
-        private Color? _colorLine2;
-        private Color ColorLine2
-        {
-            get
-            {
-                if (_colorLine2 == null)
-                    return Color.Black;
-                return _colorLine2.Value;
-            }
-            set
-            {
-                _colorLine2 = value;
-            }
-        }
-
-        /// <summary>
-        /// Nie uzywaj do odczytu, uzyj propercje
-        /// </summary>
-        private Color? _colorAxis;
-        private Color ColorAxis 
-        {
-            get
-            {
-                if (_colorAxis == null)
-                    return Color.Black;
-                return _colorAxis.Value;
-            }
-        }
-
-        /// <summary>
-        /// Nie uzywaj do odczytu, uzyj propercje
-        /// </summary>
-        private Color? _colorNet;
-        private Color ColorNet
-        {
-            get
-            {
-                if (_colorNet == null)
-                    return Color.Black;
-                else
-                    return _colorNet.Value;
-            }
-        }
-
-        private float _line1Width;
-        private float _line2Width;
-        private float _axisWidth;
-        private float _netWidth;
+        private Config _config;
 
         private IInsertionController _insertionController;
         private IScaleController _scaleController;
+        private IConfigController _configController;
 
         public Form1()
         {
@@ -100,11 +36,61 @@ namespace WinForms
 
             _insertionController = new InsertionContoller();
             _scaleController = new ScaleController();
+            _configController = new ConfigController("config.json");
 
             A = null;
             B = null;
             C = null;
             D = null;
+
+            LoadConfig();
+            InitCheckboxes();
+        }
+
+        private void InitCheckboxes()
+        {
+            var cbs = new List<CheckBox>() { cbNet, cbLine2, cbLine1, cbAxis };
+
+            foreach (var cb in cbs)
+            {
+                if (cb.Checked)
+                    cb.Text = CheckBoxState.On;
+                else
+                    cb.Text = CheckBoxState.Off;
+            }
+        }
+
+        private void LoadConfig()
+        {
+            if (CustomMessageBox.QuestionYesNo("Czy wczytaj poprzedni zapisany stan aplikacji?") == DialogResult.Yes)
+            {
+                _config = _configController.LoadConfig();
+
+                if (_config == null)
+                    _config = new Config();
+                else
+                    ApplyConfig(_config);
+            }
+            else
+                _config = new Config();
+        }
+
+        private void ApplyConfig(Config config)
+        {
+            cbAxis.Checked = config.AxisColorVisibility;
+            cbLine1.Checked = config.Line1IsVisibility;
+            cbLine2.Checked = config.Line2IsVisibility;
+            cbNet.Checked = config.NetVisibility;
+
+            btnAxisColor.BackColor = config.AxisColor;
+            btnColor1.BackColor = config.Line1Color;
+            btnColor2.BackColor = config.Line2Color;
+            btnColorNet.BackColor = config.NetColor;
+
+            trackBarAxis.Value = config.AxisWidth;
+            trackBar1.Value = config.Line1Width;
+            trackBar2.Value = config.Line2Width;
+            trackBarNet.Value = config.NetWidth;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -146,27 +132,14 @@ namespace WinForms
             if (A == null || B == null || C == null || D == null)
                 return;;
 
-            Graphics g = pictureBox1.CreateGraphics();
-            int rozpietoscX = 20;
-            int rozpietoscY = 20;
-
-            var currentWidth = pictureBox1.Width;
             var currentHeight = pictureBox1.Height;
+            var currentWidth = pictureBox1.Width;
 
-            g.Clear(Color.White);
+            Graphics g = pictureBox1.CreateGraphics();
 
-            var pen = new Pen(ColorNet);
-            for (int y = 0; y < pictureBox1.Height; y += rozpietoscY)
-            {
-                g.DrawLine(pen, 0, y, pictureBox1.Width, y);
-            }
+            DrawNet(g);
 
-            for (int x = 0; x < pictureBox1.Width; x += rozpietoscX)
-            {
-                g.DrawLine(pen, x, 0, x, pictureBox1.Height);
-            }
-
-            DrawAxis(g, ColorAxis);
+            DrawAxis(g, _config.AxisColor);
 
             var pointsToDraw = _scaleController.ComplexScale(A, B, C, D, currentWidth, currentHeight);
 
@@ -175,21 +148,12 @@ namespace WinForms
             var drawC = pointsToDraw[2];
             var drawD = pointsToDraw[3];
 
-            // Narysowanie prostej między punktami A i B
-            Pen linePen1 = new Pen(ColorLine1, _line1Width);
-            Pen linePen2 = new Pen(ColorLine2, _line2Width);
+            DrawLines(g, drawA, drawB, drawC, drawD);
+            DrawLabels(g, drawA, drawB, drawC, drawD);
+        }
 
-            g.DrawLine(linePen1, (float)drawA.X, (float) drawA.Y, (float)drawB.X, (float)drawB.Y);
-            g.DrawLine(linePen2, (float)drawC.X, (float)drawC.Y, (float)drawD.X, (float)drawD.Y);
-
-            Console.WriteLine(string.Format("A=({0};{1})", (int)drawA.X, (int)drawA.Y));
-            Console.WriteLine(string.Format("B=({0};{1})", (int)drawB.X, (int)drawB.Y));
-            Console.WriteLine(string.Format("C=({0};{1})", (int)drawC.X, (int)drawC.Y));
-            Console.WriteLine(string.Format("D=({0};{1})", (int)drawD.X, (int)drawD.Y));
-            Console.WriteLine(String.Format("H = {0}", currentHeight));
-            Console.WriteLine(String.Format("W = {0}", currentWidth));
-            Console.WriteLine();
-
+        private void DrawLabels(Graphics g, MyPoint drawA, MyPoint drawB, MyPoint drawC, MyPoint drawD)
+        {
             labelA?.Dispose();
             labelB?.Dispose();
             labelC?.Dispose();
@@ -207,33 +171,52 @@ namespace WinForms
             labelD = new Label();
             labelD.Text = $"({D.X},{D.Y})";
 
-            var pictureBoxLocX = pictureBox1.Location.X;
-            var pictureBoxLocY = pictureBox1.Location.Y;
+            var drawLabelsLocalizactions = _scaleController.ComplexScalePointLabels(drawA, drawB, drawC, drawD, pictureBox1.Width, pictureBox1.Height);
 
-            labelA.Location = new Point((int) drawA.X + pictureBoxLocX, (int) drawA.Y + pictureBoxLocY);
-            this.Controls.Add(labelA);
-            labelB.Location = new Point((int)drawB.X + pictureBoxLocX, (int)drawB.Y + pictureBoxLocY);
-            this.Controls.Add(labelB);
-            labelC.Location = new Point((int)drawC.X + pictureBoxLocX, (int)drawC.Y + pictureBoxLocY);
-            this.Controls.Add(labelC);
-            labelD.Location = new Point((int)drawD.X + pictureBoxLocX, (int)drawD.Y + pictureBoxLocY);
-            this.Controls.Add(labelD);
+            var drawLabelALoc = drawLabelsLocalizactions[0];
+            var drawLabelBLoc = drawLabelsLocalizactions[1];
+            var drawLabelCLoc = drawLabelsLocalizactions[2];
+            var drawLabelDLoc = drawLabelsLocalizactions[3];
 
-            DrawTransparentText(g, labelA.Text, new Font("Arial", 12), new Rectangle((int)drawA.X, (int)drawA.Y, 100, 30), Color.Black);
-            DrawTransparentText(g, labelB.Text, new Font("Arial", 12), new Rectangle((int)drawB.X, (int)drawB.Y, 100, 30), Color.Black);
-            DrawTransparentText(g, labelC.Text, new Font("Arial", 12), new Rectangle((int)drawC.X, (int)drawC.Y, 100, 30), Color.Black);
-            DrawTransparentText(g, labelD.Text, new Font("Arial", 12), new Rectangle((int)drawD.X, (int)drawD.Y, 100, 30), Color.Black);
+            DrawTransparentText(g, labelA.Text, new Font("Arial", 12), new Rectangle((int)drawLabelALoc.X, (int)drawLabelALoc.Y, 100, 30), Color.Black);
+            DrawTransparentText(g, labelB.Text, new Font("Arial", 12), new Rectangle((int)drawLabelBLoc.X, (int)drawLabelBLoc.Y, 100, 30), Color.Black);
+            DrawTransparentText(g, labelC.Text, new Font("Arial", 12), new Rectangle((int)drawLabelCLoc.X, (int)drawLabelCLoc.Y, 100, 30), Color.Black);
+            DrawTransparentText(g, labelD.Text, new Font("Arial", 12), new Rectangle((int)drawLabelDLoc.X, (int)drawLabelDLoc.Y, 100, 30), Color.Black);
+        }
 
-            //labelA.BringToFront();
-            //labelB.BringToFront();
-            //labelC.BringToFront();
-            //labelD.BringToFront();
+        private void DrawLines(Graphics g, MyPoint drawA, MyPoint drawB, MyPoint drawC, MyPoint drawD)
+        {
+            // Narysowanie prostej między punktami A i B
+            Pen linePen1 = new Pen(_config.Line1Color, _config.Line1Width);
+            Pen linePen2 = new Pen(_config.Line2Color, _config.Line2Width);
+
+            g.DrawLine(linePen1, (float)drawA.X, (float)drawA.Y, (float)drawB.X, (float)drawB.Y);
+            g.DrawLine(linePen2, (float)drawC.X, (float)drawC.Y, (float)drawD.X, (float)drawD.Y);
+        }
+
+        private void DrawNet(Graphics g)
+        {
+            int rozpietoscX = 20;
+            int rozpietoscY = 20;
+
+            g.Clear(Color.White);
+
+            var pen = new Pen(_config.NetColor);
+            for (int y = 0; y < pictureBox1.Height; y += rozpietoscY)
+            {
+                g.DrawLine(pen, 0, y, pictureBox1.Width, y);
+            }
+
+            for (int x = 0; x < pictureBox1.Width; x += rozpietoscX)
+            {
+                g.DrawLine(pen, x, 0, x, pictureBox1.Height);
+            }
         }
 
         private void DrawAxis(Graphics g, Color axisColor)
         {
             float arrowSize = 10;
-            float lineWidth = _axisWidth;
+            float lineWidth = _config.AxisWidth;
             var currentHeight = pictureBox1.Height;
             var currentWidth = pictureBox1.Width;
 
@@ -253,8 +236,8 @@ namespace WinForms
             g.DrawLine(axisPen, startY, endY);
 
             // Narysuj strzałki na końcach osi
-            DrawArrow(g, startX, endX, arrowSize, lineWidth, ColorAxis);
-            DrawArrow(g, startY, endY, arrowSize, lineWidth, ColorAxis);
+            DrawArrow(g, startX, endX, arrowSize, lineWidth, _config.AxisColor);
+            DrawArrow(g, startY, endY, arrowSize, lineWidth, _config.AxisColor);
         }
 
         private void btnColor_Click(object sender, EventArgs e)
@@ -265,13 +248,13 @@ namespace WinForms
                 var color = btn.BackColor = colorDialog1.Color;
 
                 if (btn.Name == "btnColor1")
-                    _colorLine1 = color;
+                    _config.Line1Color = color;
                 else if (btn.Name == "btnColor2")
-                    _colorLine2 = color;
+                    _config.Line2Color = color;
                 else if (btn.Name == "btnColorNet")
-                    _colorNet = color;
+                    _config.NetColor = color;
                 else
-                    _colorAxis = color;
+                    _config.AxisColor = color;
 
                 // Sprawdzenie jasności koloru tła
                 var brightness = (color.R + color.G + color.B) / 3;
@@ -288,25 +271,25 @@ namespace WinForms
 
         private void trackBar1_ValueChanged(object sender, EventArgs e)
         {
-            _line1Width = trackBar1.Value;
+            _config.Line1Width = trackBar1.Value;
             Draw();
         }
 
         private void trackBar2_ValueChanged(object sender, EventArgs e)
         {
-            _line2Width = trackBar2.Value;
+            _config.Line2Width = trackBar2.Value;
             Draw();
         }
 
         private void trackBarAxis_ValueChanged(object sender, EventArgs e)
         {
-            _axisWidth = trackBarAxis.Value;
+            _config.AxisWidth = trackBarAxis.Value;
             Draw();
         }
 
         private void trackBarNet_Scroll(object sender, EventArgs e)
         {
-            _netWidth = trackBarNet.Value;
+            _config.NetWidth = trackBarNet.Value;
             Draw();
         }
 
@@ -314,12 +297,29 @@ namespace WinForms
         {
             var cb = sender as CheckBox;
 
-            cb.Checked = !cb.Checked;
-
             if (cb.CheckState == CheckState.Checked)
                 cb.Text = CheckBoxState.On;
             else
                 cb.Text = CheckBoxState.Off;
+
+            if (cb.Name == "cbLine1")
+                _config.Line1IsVisibility = cb.Checked;
+            else if (cb.Name == "cbLine2")
+                _config.Line2IsVisibility = cb.Checked;
+            else if (cb.Name == "cbAxis")
+                _config.AxisColorVisibility = cb.Checked;
+            else if (cb.Name == "cbNet")
+                _config.NetVisibility = cb.Checked;
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            _configController.SaveConfig(_config);
+        }
+
+        private void rb_CheckedChanged(object sender, EventArgs e)
+        {
+            panelLineSaveSettings.Enabled = rbYes.Checked;
         }
 
         private bool ValidateData()
@@ -348,16 +348,9 @@ namespace WinForms
                 CustomMessageBox.Error("Wprowadzono błędne dane wejściowe");
                 return false;
             }
-            return true; 
+
+            return true;
         }
-
-        /*private void Rysuj()
-        {
-            var e = new Graphics();
-
-            Pen pen = new Pen(Color.FromArgb(255, 0, 0, 0));
-            e.Graphics.DrawLine(pen, 20, 10, 300, 100);
-        }*/
 
         private void Form1_Resize(object sender, EventArgs e)
         {
