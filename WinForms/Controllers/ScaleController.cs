@@ -50,6 +50,8 @@ namespace WinForms.Controllers
         /// <param name="h"></param>
         /// <returns></returns>
         List<MyPoint> ComplexScale(MyPoint A, MyPoint B, MyPoint C, MyPoint D, double w, double h);
+
+        List<MyPoint> ComplexScalePointLabels(MyPoint A, MyPoint B, MyPoint C, MyPoint D, double w, double h);
     }
     public class ScaleController : IScaleController
     {
@@ -171,6 +173,45 @@ namespace WinForms.Controllers
             var c = ScaleIncreasePoints(b[0], b[1], b[2], b[3], w, h);
 
             return c;
+        }
+
+        /// <summary>
+        /// Uzywana do odpowiedniego rozmieszczenia tych napisow wartości pkt na wykresie, np (423,421)
+        /// </summary>
+        /// <param name="A"></param>
+        /// <param name="B"></param>
+        /// <param name="C"></param>
+        /// <param name="D"></param>
+        /// <param name="w"></param>
+        /// <param name="h"></param>
+        /// <returns></returns>
+        public List<MyPoint> ComplexScalePointLabels(MyPoint A, MyPoint B, MyPoint C, MyPoint D, double w, double h)
+        {
+            var aClone = A.Clone() as MyPoint;
+            var bClone = B.Clone() as MyPoint;
+            var cClone = C.Clone() as MyPoint;
+            var dClone = D.Clone() as MyPoint;
+
+            var points = new List<MyPoint>() {aClone, bClone, cClone, dClone};
+
+            for (var i = 0; i < points.Count; i++)
+            {
+                /* Zeby nie wychodzilo po prawej stronie poza wykres */
+                if (w / points[i].X < 2)
+                    points[i].X = points[i].X - 90;
+     
+                /* Jesli nad osią X, to wyswietlaj poniżej linii, jak pod, to powyżej */
+                if (h / points[i].Y < 2)
+                {
+                    points[i].Y = points[i].Y - 20;
+                }
+                else
+                {
+                    points[i].Y = points[i].Y + 20;
+                }
+            }
+
+            return points;
         }
 
         private double GetMinXValue(MyPoint A, MyPoint B, MyPoint C, MyPoint D)

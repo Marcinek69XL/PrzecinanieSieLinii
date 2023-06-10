@@ -26,5 +26,14 @@ namespace WinForms
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
         }
+
+        public static DialogResult QuestionYesNo(string questionMessage)
+        {
+            return
+                MessageBox.Show(questionMessage,
+                    "Pytanie",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+        }
     }
 }
