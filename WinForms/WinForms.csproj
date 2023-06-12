@@ -63,6 +63,7 @@
     <Compile Include="Model\Config.cs" />
     <Compile Include="Model\LineSegment.cs" />
     <Compile Include="Model\MyPoint.cs" />
+    <Compile Include="Model\Values.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">

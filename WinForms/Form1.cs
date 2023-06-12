@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Reflection.Emit;
 using System.Windows.Forms;
 using WinForms.Controllers;
@@ -19,14 +21,17 @@ namespace WinForms
             internal static readonly string Off = "Ukryte";
         }
 
-        private MyPoint A, B, C, D;
         Label labelA, labelB, labelC, labelD;
 
+        private bool _loadConfigAndValuesUserAnswer;
+
         private Config _config;
+        private Values _values;
 
         private IInsertionController _insertionController;
         private IScaleController _scaleController;
-        private IConfigController _configController;
+        private IConfigController<Config> _configControllerSettings;
+        private IConfigController<Values> _configControllerValues;
 
         public Form1()
         {
@@ -36,15 +41,72 @@ namespace WinForms
 
             _insertionController = new InsertionContoller();
             _scaleController = new ScaleController();
-            _configController = new ConfigController("config.json");
+            _configControllerSettings = new ConfigController<Config>("config.json");
+            _configControllerValues = new ConfigController<Values>("values.json");
 
-            A = null;
-            B = null;
-            C = null;
-            D = null;
+            _loadConfigAndValuesUserAnswer = false;
 
             LoadConfig();
+            LoadValues();
+
             InitCheckboxes();
+            SetButtonsFontBlackOrWhite();
+        }
+
+        private void SetButtonsFontBlackOrWhite()
+        {
+            var btns = new List<Button>() {btnColor1, btnColor2, btnAxisColor, btnColorNet};
+
+            foreach (var btn in btns)
+            {
+                SetButtonFontBlackOrWhite(btn);
+            }
+        }
+
+        private void LoadValues()
+        {
+            try
+            {
+                _values = _configControllerValues.LoadConfig();
+            }
+            catch
+            {
+                CustomMessageBox.Error("Napotkano problem z wczytaniem zapisanych ostatnich wartości");
+            }
+
+
+            if (_values == null)
+                _values = new Values();
+            else
+            {
+                _loadConfigAndValuesUserAnswer = true;
+                ApplyValues();
+            }
+        }
+
+        private void ApplyValues()
+        {
+            AxTextBox.Text = Convert.ToString(_values.A.X, CultureInfo.CurrentCulture);
+            AyTextBox.Text = Convert.ToString(_values.A.Y, CultureInfo.CurrentCulture);
+            BxTextBox.Text = Convert.ToString(_values.B.X, CultureInfo.CurrentCulture);
+            ByTextBox.Text = Convert.ToString(_values.B.Y, CultureInfo.CurrentCulture);
+            CxTextBox.Text = Convert.ToString(_values.C.X, CultureInfo.CurrentCulture);
+            CyTextBox.Text = Convert.ToString(_values.C.Y, CultureInfo.CurrentCulture);
+            DxTextBox.Text = Convert.ToString(_values.D.X, CultureInfo.CurrentCulture);
+            DyTextBox.Text = Convert.ToString(_values.D.Y, CultureInfo.CurrentCulture);
+        }
+
+        private void SetButtonFontBlackOrWhite(Button btn)
+        {
+            var backgroundBtnColor = btn.BackColor;
+
+            // Sprawdzenie jasności koloru tła
+            var brightness = (backgroundBtnColor.R + backgroundBtnColor.G + backgroundBtnColor.B) / 3;
+
+            if (brightness < 128) // Kolor tła jest ciemny
+                btn.ForeColor = Color.White;
+            else // Kolor tła jest jasny
+                btn.ForeColor = Color.Black;
         }
 
         private void InitCheckboxes()
@@ -64,12 +126,24 @@ namespace WinForms
         {
             if (CustomMessageBox.QuestionYesNo("Czy wczytaj poprzedni zapisany stan aplikacji?") == DialogResult.Yes)
             {
-                _config = _configController.LoadConfig();
+                try
+                {
+                    _config = _configControllerSettings.LoadConfig();
+                }
+                catch
+                {
+                    CustomMessageBox.Error("Napotkano problem z wczytaniem zapisanego configu");
+                }
+                
 
                 if (_config == null)
                     _config = new Config();
                 else
+                {
+                    _loadConfigAndValuesUserAnswer = true;
                     ApplyConfig(_config);
+                }
+                   
             }
             else
                 _config = new Config();
@@ -77,7 +151,7 @@ namespace WinForms
 
         private void ApplyConfig(Config config)
         {
-            cbAxis.Checked = config.AxisColorVisibility;
+            cbAxis.Checked = config.AxisIsVisibility;
             cbLine1.Checked = config.Line1IsVisibility;
             cbLine2.Checked = config.Line2IsVisibility;
             cbNet.Checked = config.NetVisibility;
@@ -91,6 +165,8 @@ namespace WinForms
             trackBar1.Value = config.Line1Width;
             trackBar2.Value = config.Line2Width;
             trackBarNet.Value = config.NetWidth;
+            trackBarPoint.Value = config.PointSize;
+            
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -100,18 +176,18 @@ namespace WinForms
 
             InitPoints();
 
-            A.X = double.Parse(AxTextBox.Text);
-            A.Y = double.Parse(AyTextBox.Text);
-            B.X = double.Parse(BxTextBox.Text);
-            B.Y = double.Parse(ByTextBox.Text);
-            C.X = double.Parse(CxTextBox.Text);
-            C.Y = double.Parse(CyTextBox.Text);
-            D.X = double.Parse(DxTextBox.Text);
-            D.Y = double.Parse(DyTextBox.Text);
+            _values.A.X = double.Parse(AxTextBox.Text);
+            _values.A.Y = double.Parse(AyTextBox.Text);
+            _values.B.X = double.Parse(BxTextBox.Text);
+            _values.B.Y = double.Parse(ByTextBox.Text);
+            _values.C.X = double.Parse(CxTextBox.Text);
+            _values.C.Y = double.Parse(CyTextBox.Text);
+            _values.D.X = double.Parse(DxTextBox.Text);
+            _values.D.Y = double.Parse(DyTextBox.Text);
 
             Draw();
 
-            bool przecinajaSie = _insertionController.CzySiePrzecinaja(A, B, C, D);
+            bool przecinajaSie = _insertionController.CzySiePrzecinaja(_values.A, _values.B, _values.C, _values.D);
             
             if (przecinajaSie)
                 CustomMessageBox.Info("Linie przecinają się");
@@ -121,35 +197,62 @@ namespace WinForms
 
         private void InitPoints()
         {
-            A = new MyPoint();
-            B = new MyPoint();
-            C = new MyPoint();
-            D = new MyPoint();
+            _values.A = new MyPoint();
+            _values.B = new MyPoint();
+            _values.C = new MyPoint();
+            _values.D = new MyPoint();
         }
 
         private void Draw()
         {
-            if (A == null || B == null || C == null || D == null)
+            if(_values == null)
+                return;
+            if (_values.A == null || _values.B == null || _values.C == null || _values.D == null)
                 return;;
 
             var currentHeight = pictureBox1.Height;
             var currentWidth = pictureBox1.Width;
 
-            Graphics g = pictureBox1.CreateGraphics();
+            var g = pictureBox1.CreateGraphics();
+            g.Clear(Color.White);
 
-            DrawNet(g);
+            if (_config.NetVisibility)
+                DrawNet(g);
+            
+            if (_config.AxisIsVisibility)
+                DrawAxis(g, _config.AxisColor);
 
-            DrawAxis(g, _config.AxisColor);
-
-            var pointsToDraw = _scaleController.ComplexScale(A, B, C, D, currentWidth, currentHeight);
+            var pointsToDraw = _scaleController.ComplexScale(_values.A, _values.B, _values.C, _values.D, currentWidth, currentHeight);
 
             var drawA = pointsToDraw[0];
             var drawB = pointsToDraw[1];
             var drawC = pointsToDraw[2];
             var drawD = pointsToDraw[3];
 
-            DrawLines(g, drawA, drawB, drawC, drawD);
+            if (_config.Line1IsVisibility)
+                DrawLine(g, drawA, drawB, _config.Line1Color, _config.Line1Width);
+
+            if (_config.Line2IsVisibility)
+                DrawLine(g, drawC, drawD, _config.Line2Color, _config.Line2Width);
+
+            if (_config.PointsVisibily)
+            {
+                DrawPoint(g, drawA, _config.PointSize);
+                DrawPoint(g, drawB, _config.PointSize);
+                DrawPoint(g, drawC, _config.PointSize);
+                DrawPoint(g, drawD, _config.PointSize);
+            }
+            
             DrawLabels(g, drawA, drawB, drawC, drawD);
+        }
+
+        private void DrawPoint(Graphics g, MyPoint point, int pointSize)
+        {
+            // Narysowanie punktu
+            var pointX = point.X - pointSize / 2;
+            var pointY = point.Y - pointSize / 2;
+            Brush pointBrush = new SolidBrush(Color.Blue);
+            g.FillEllipse(pointBrush, new Rectangle((int)pointX, (int)pointY, pointSize, pointSize));
         }
 
         private void DrawLabels(Graphics g, MyPoint drawA, MyPoint drawB, MyPoint drawC, MyPoint drawD)
@@ -160,16 +263,16 @@ namespace WinForms
             labelD?.Dispose();
 
             labelA = new Label();
-            labelA.Text = $"({A.X},{A.Y})";
+            labelA.Text = $"({_values.A.X},{_values.A.Y})";
 
             labelB = new Label();
-            labelB.Text = $"({B.X},{B.Y})";
+            labelB.Text = $"({_values.B.X},{_values.B.Y})";
 
             labelC = new Label();
-            labelC.Text = $"({C.X},{C.Y})";
+            labelC.Text = $"({_values.C.X},{_values.C.Y})";
 
             labelD = new Label();
-            labelD.Text = $"({D.X},{D.Y})";
+            labelD.Text = $"({_values.D.X},{_values.D.Y})";
 
             var drawLabelsLocalizactions = _scaleController.ComplexScalePointLabels(drawA, drawB, drawC, drawD, pictureBox1.Width, pictureBox1.Height);
 
@@ -184,14 +287,12 @@ namespace WinForms
             DrawTransparentText(g, labelD.Text, new Font("Arial", 12), new Rectangle((int)drawLabelDLoc.X, (int)drawLabelDLoc.Y, 100, 30), Color.Black);
         }
 
-        private void DrawLines(Graphics g, MyPoint drawA, MyPoint drawB, MyPoint drawC, MyPoint drawD)
+        private void DrawLine(Graphics g, MyPoint from, MyPoint to, Color lineColor, float lineWidth)
         {
             // Narysowanie prostej między punktami A i B
-            Pen linePen1 = new Pen(_config.Line1Color, _config.Line1Width);
-            Pen linePen2 = new Pen(_config.Line2Color, _config.Line2Width);
+            var pen = new Pen(lineColor, lineWidth);
 
-            g.DrawLine(linePen1, (float)drawA.X, (float)drawA.Y, (float)drawB.X, (float)drawB.Y);
-            g.DrawLine(linePen2, (float)drawC.X, (float)drawC.Y, (float)drawD.X, (float)drawD.Y);
+            g.DrawLine(pen, (float)from.X, (float)from.Y, (float)to.X, (float)to.Y);
         }
 
         private void DrawNet(Graphics g)
@@ -199,9 +300,7 @@ namespace WinForms
             int rozpietoscX = 20;
             int rozpietoscY = 20;
 
-            g.Clear(Color.White);
-
-            var pen = new Pen(_config.NetColor);
+            var pen = new Pen(_config.NetColor, _config.NetWidth);
             for (int y = 0; y < pictureBox1.Height; y += rozpietoscY)
             {
                 g.DrawLine(pen, 0, y, pictureBox1.Width, y);
@@ -256,14 +355,9 @@ namespace WinForms
                 else
                     _config.AxisColor = color;
 
-                // Sprawdzenie jasności koloru tła
-                var brightness = (color.R + color.G + color.B) / 3;
-
                 // Ustawienie koloru napisu na etykiecie
-                if (brightness < 128) // Kolor tła jest ciemny
-                    btn.ForeColor = Color.White;
-                else // Kolor tła jest jasny
-                    btn.ForeColor = Color.Black;
+                SetButtonFontBlackOrWhite(btn);
+              
 
                 Draw();
             }
@@ -307,19 +401,40 @@ namespace WinForms
             else if (cb.Name == "cbLine2")
                 _config.Line2IsVisibility = cb.Checked;
             else if (cb.Name == "cbAxis")
-                _config.AxisColorVisibility = cb.Checked;
+                _config.AxisIsVisibility = cb.Checked;
             else if (cb.Name == "cbNet")
                 _config.NetVisibility = cb.Checked;
+
+            Draw();
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _configController.SaveConfig(_config);
+            if(_config.SaveConfig)
+                _configControllerSettings.SaveConfig(_config);
+            if(_config.SaveValues)
+                _configControllerValues.SaveConfig(_values);
         }
 
         private void rb_CheckedChanged(object sender, EventArgs e)
         {
             panelLineSaveSettings.Enabled = rbYes.Checked;
+        }
+
+        private void Form1_ResizeEnd(object sender, EventArgs e)
+        {
+            Draw();
+        }
+
+        private void trackBarPoint_ValueChanged(object sender, EventArgs e)
+        {
+            _config.PointSize = trackBarPoint.Value;
+            Draw();
+        }
+
+        private void rbOdcYes_CheckedChanged(object sender, EventArgs e)
+        {
+            _config.SaveValues = rbOdcYes.Checked;
         }
 
         private bool ValidateData()

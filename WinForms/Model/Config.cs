@@ -157,17 +157,46 @@ namespace WinForms.Model
             set => _netVisibility = value;
         }
 
-        private bool? _axisColorVisibility;
-        public bool AxisColorVisibility
+        private bool? _axisIsVisibility;
+        public bool AxisIsVisibility
         {
             get
             {
-                if (_axisColorVisibility == null)
+                if (_axisIsVisibility == null)
                     return true;
 
-                return _axisColorVisibility.Value;
+                return _axisIsVisibility.Value;
             }
-            set => _axisColorVisibility = value;
+            set => _axisIsVisibility = value;
+        }
+
+        private int? _pointSize;
+        public int PointSize
+        {
+            get => _pointSize ?? 1;
+            set => _pointSize = value;
+        }
+
+        private bool? _pointsVisibily;
+
+        public bool PointsVisibily
+        {
+            get => _pointsVisibily ?? true;
+            set => _pointsVisibily = value;
+        }
+
+        private bool? _saveConfig;
+        public bool SaveConfig
+        {
+            get => _saveConfig ?? true;
+            set => _saveConfig = value;
+        }
+
+        private bool? _saveValues;
+        public bool SaveValues
+        {
+            get => _saveValues ?? true;
+            set => _saveValues = value;
         }
     }
 }

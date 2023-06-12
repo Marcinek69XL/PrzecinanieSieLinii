@@ -52,6 +52,8 @@
             this.button1 = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.trackBarPoint = new System.Windows.Forms.TrackBar();
+            this.label14 = new System.Windows.Forms.Label();
             this.panelLineSaveSettings = new System.Windows.Forms.Panel();
             this.rbOdcNo = new System.Windows.Forms.RadioButton();
             this.rbOdcYes = new System.Windows.Forms.RadioButton();
@@ -76,13 +78,12 @@
             this.btnColor1 = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.colorDialog2 = new System.Windows.Forms.ColorDialog();
-            this.colorDialog3 = new System.Windows.Forms.ColorDialog();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tabControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarPoint)).BeginInit();
             this.panelLineSaveSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarNet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarAxis)).BeginInit();
@@ -186,7 +187,7 @@
             this.groupBox2.Controls.Add(this.DxTextBox);
             this.groupBox2.Controls.Add(this.CyTextBox);
             this.groupBox2.Controls.Add(this.CxTextBox);
-            this.groupBox2.Location = new System.Drawing.Point(268, 12);
+            this.groupBox2.Location = new System.Drawing.Point(12, 134);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(250, 118);
             this.groupBox2.TabIndex = 8;
@@ -294,7 +295,7 @@
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
-            this.button1.Location = new System.Drawing.Point(369, 152);
+            this.button1.Location = new System.Drawing.Point(280, 144);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(82, 27);
             this.button1.TabIndex = 9;
@@ -307,15 +308,17 @@
             this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox1.Location = new System.Drawing.Point(21, 233);
+            this.pictureBox1.Location = new System.Drawing.Point(12, 271);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(1029, 599);
+            this.pictureBox1.Size = new System.Drawing.Size(1199, 578);
             this.pictureBox1.TabIndex = 10;
             this.pictureBox1.TabStop = false;
             // 
             // groupBox3
             // 
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox3.Controls.Add(this.trackBarPoint);
+            this.groupBox3.Controls.Add(this.label14);
             this.groupBox3.Controls.Add(this.panelLineSaveSettings);
             this.groupBox3.Controls.Add(this.rbNo);
             this.groupBox3.Controls.Add(this.rbYes);
@@ -336,12 +339,31 @@
             this.groupBox3.Controls.Add(this.label10);
             this.groupBox3.Controls.Add(this.btnColor1);
             this.groupBox3.Controls.Add(this.label9);
-            this.groupBox3.Location = new System.Drawing.Point(627, 12);
+            this.groupBox3.Location = new System.Drawing.Point(541, 12);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(414, 208);
+            this.groupBox3.Size = new System.Drawing.Size(670, 208);
             this.groupBox3.TabIndex = 9;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Ustawienia";
+            // 
+            // trackBarPoint
+            // 
+            this.trackBarPoint.Location = new System.Drawing.Point(519, 19);
+            this.trackBarPoint.Minimum = 1;
+            this.trackBarPoint.Name = "trackBarPoint";
+            this.trackBarPoint.Size = new System.Drawing.Size(145, 45);
+            this.trackBarPoint.TabIndex = 34;
+            this.trackBarPoint.Value = 1;
+            this.trackBarPoint.ValueChanged += new System.EventHandler(this.trackBarPoint_ValueChanged);
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(473, 25);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(40, 13);
+            this.label14.TabIndex = 32;
+            this.label14.Text = "Punkty";
             // 
             // panelLineSaveSettings
             // 
@@ -375,6 +397,7 @@
             this.rbOdcYes.TabStop = true;
             this.rbOdcYes.Text = "Tak";
             this.rbOdcYes.UseVisualStyleBackColor = true;
+            this.rbOdcYes.CheckedChanged += new System.EventHandler(this.rbOdcYes_CheckedChanged);
             // 
             // lbOdc
             // 
@@ -578,7 +601,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1053, 861);
+            this.ClientSize = new System.Drawing.Size(1223, 861);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.button1);
@@ -587,6 +610,7 @@
             this.Name = "Form1";
             this.Text = "Form1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.ResizeEnd += new System.EventHandler(this.Form1_ResizeEnd);
             this.Click += new System.EventHandler(this.Form1_Click);
             this.Resize += new System.EventHandler(this.Form1_Resize);
             this.groupBox1.ResumeLayout(false);
@@ -597,6 +621,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarPoint)).EndInit();
             this.panelLineSaveSettings.ResumeLayout(false);
             this.panelLineSaveSettings.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarNet)).EndInit();
@@ -635,8 +660,6 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ColorDialog colorDialog1;
-        private System.Windows.Forms.ColorDialog colorDialog2;
-        private System.Windows.Forms.ColorDialog colorDialog3;
         private System.Windows.Forms.Button btnColor2;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Button btnColor1;
@@ -659,6 +682,8 @@
         private System.Windows.Forms.RadioButton rbNo;
         private System.Windows.Forms.RadioButton rbYes;
         private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TrackBar trackBarPoint;
+        private System.Windows.Forms.Label label14;
     }
 }
 
