@@ -52,6 +52,8 @@
             this.button1 = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.cbGridlines = new System.Windows.Forms.CheckBox();
+            this.label15 = new System.Windows.Forms.Label();
             this.trackBarPoint = new System.Windows.Forms.TrackBar();
             this.label14 = new System.Windows.Forms.Label();
             this.panelLineSaveSettings = new System.Windows.Forms.Panel();
@@ -78,8 +80,12 @@
             this.btnColor1 = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.label15 = new System.Windows.Forms.Label();
-            this.cbGridlines = new System.Windows.Forms.CheckBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -91,12 +97,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBarAxis)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // AxTextBox
             // 
             this.AxTextBox.Location = new System.Drawing.Point(31, 35);
-            this.AxTextBox.MaxLength = 3;
+            this.AxTextBox.MaxLength = 6;
             this.AxTextBox.Name = "AxTextBox";
             this.AxTextBox.Size = new System.Drawing.Size(58, 20);
             this.AxTextBox.TabIndex = 0;
@@ -160,12 +167,12 @@
             this.ByTextBox.MaxLength = 3;
             this.ByTextBox.Name = "ByTextBox";
             this.ByTextBox.Size = new System.Drawing.Size(58, 20);
-            this.ByTextBox.TabIndex = 3;
+            this.ByTextBox.TabIndex = 6;
             // 
             // BxTextBox
             // 
             this.BxTextBox.Location = new System.Drawing.Point(31, 61);
-            this.BxTextBox.MaxLength = 3;
+            this.BxTextBox.MaxLength = 6;
             this.BxTextBox.Name = "BxTextBox";
             this.BxTextBox.Size = new System.Drawing.Size(58, 20);
             this.BxTextBox.TabIndex = 2;
@@ -173,7 +180,7 @@
             // AyTextBox
             // 
             this.AyTextBox.Location = new System.Drawing.Point(139, 35);
-            this.AyTextBox.MaxLength = 3;
+            this.AyTextBox.MaxLength = 6;
             this.AyTextBox.Name = "AyTextBox";
             this.AyTextBox.Size = new System.Drawing.Size(58, 20);
             this.AyTextBox.TabIndex = 1;
@@ -265,7 +272,7 @@
             // DyTextBox
             // 
             this.DyTextBox.Location = new System.Drawing.Point(139, 61);
-            this.DyTextBox.MaxLength = 3;
+            this.DyTextBox.MaxLength = 6;
             this.DyTextBox.Name = "DyTextBox";
             this.DyTextBox.Size = new System.Drawing.Size(58, 20);
             this.DyTextBox.TabIndex = 3;
@@ -273,7 +280,7 @@
             // DxTextBox
             // 
             this.DxTextBox.Location = new System.Drawing.Point(31, 61);
-            this.DxTextBox.MaxLength = 3;
+            this.DxTextBox.MaxLength = 6;
             this.DxTextBox.Name = "DxTextBox";
             this.DxTextBox.Size = new System.Drawing.Size(58, 20);
             this.DxTextBox.TabIndex = 2;
@@ -281,7 +288,7 @@
             // CyTextBox
             // 
             this.CyTextBox.Location = new System.Drawing.Point(139, 35);
-            this.CyTextBox.MaxLength = 3;
+            this.CyTextBox.MaxLength = 6;
             this.CyTextBox.Name = "CyTextBox";
             this.CyTextBox.Size = new System.Drawing.Size(58, 20);
             this.CyTextBox.TabIndex = 1;
@@ -289,7 +296,7 @@
             // CxTextBox
             // 
             this.CxTextBox.Location = new System.Drawing.Point(31, 35);
-            this.CxTextBox.MaxLength = 3;
+            this.CxTextBox.MaxLength = 6;
             this.CxTextBox.Name = "CxTextBox";
             this.CxTextBox.Size = new System.Drawing.Size(58, 20);
             this.CxTextBox.TabIndex = 0;
@@ -297,7 +304,7 @@
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
-            this.button1.Location = new System.Drawing.Point(280, 144);
+            this.button1.Location = new System.Drawing.Point(353, 20);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(82, 27);
             this.button1.TabIndex = 9;
@@ -349,6 +356,25 @@
             this.groupBox3.TabIndex = 9;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Ustawienia";
+            // 
+            // cbGridlines
+            // 
+            this.cbGridlines.AutoSize = true;
+            this.cbGridlines.Location = new System.Drawing.Point(549, 64);
+            this.cbGridlines.Name = "cbGridlines";
+            this.cbGridlines.Size = new System.Drawing.Size(15, 14);
+            this.cbGridlines.TabIndex = 36;
+            this.cbGridlines.UseVisualStyleBackColor = true;
+            this.cbGridlines.Click += new System.EventHandler(this.cb_Click);
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(443, 64);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(89, 13);
+            this.label15.TabIndex = 35;
+            this.label15.Text = "Linie pomocnicze";
             // 
             // trackBarPoint
             // 
@@ -601,30 +627,72 @@
             this.label9.TabIndex = 9;
             this.label9.Text = "Prosta 1";
             // 
-            // label15
+            // groupBox4
             // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(443, 64);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(89, 13);
-            this.label15.TabIndex = 35;
-            this.label15.Text = "Linie pomocnicze";
+            this.groupBox4.Controls.Add(this.label21);
+            this.groupBox4.Controls.Add(this.label19);
+            this.groupBox4.Controls.Add(this.label18);
+            this.groupBox4.Controls.Add(this.label17);
+            this.groupBox4.Controls.Add(this.label16);
+            this.groupBox4.Location = new System.Drawing.Point(290, 67);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(231, 185);
+            this.groupBox4.TabIndex = 8;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Podsumowanie";
             // 
-            // cbGridlines
+            // label18
             // 
-            this.cbGridlines.AutoSize = true;
-            this.cbGridlines.Location = new System.Drawing.Point(549, 64);
-            this.cbGridlines.Name = "cbGridlines";
-            this.cbGridlines.Size = new System.Drawing.Size(15, 14);
-            this.cbGridlines.TabIndex = 36;
-            this.cbGridlines.UseVisualStyleBackColor = true;
-            this.cbGridlines.Click += new System.EventHandler(this.cb_Click);
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(16, 118);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(110, 13);
+            this.label18.TabIndex = 10;
+            this.label18.Text = "P = (-42,324 , 555,22)";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(16, 87);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(89, 13);
+            this.label17.TabIndex = 9;
+            this.label17.Text = "Punkt przecięcia:";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(16, 25);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(94, 13);
+            this.label16.TabIndex = 8;
+            this.label16.Text = "Czy się przecinają:";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label19.Location = new System.Drawing.Point(95, 48);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(41, 24);
+            this.label19.TabIndex = 11;
+            this.label19.Text = "Tak";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(16, 135);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(110, 13);
+            this.label21.TabIndex = 13;
+            this.label21.Text = "P = (-42,324 , 555,22)";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1223, 861);
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.button1);
@@ -651,6 +719,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBarAxis)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -709,6 +779,12 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.CheckBox cbGridlines;
         private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label label21;
     }
 }
 

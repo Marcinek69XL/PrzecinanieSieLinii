@@ -190,9 +190,14 @@ namespace WinForms
             Draw();
 
             bool przecinajaSie = _insertionController.CzySiePrzecinaja(_values.A, _values.B, _values.C, _values.D);
-            
-            if (przecinajaSie)
-                CustomMessageBox.Info("Linie przecinają się");
+            var crossPoints = _insertionController.WyznaczPunktPrzeciecia(_values.A, _values.B, _values.C, _values.D);
+
+            if (crossPoints.Count == 1 && przecinajaSie)
+                CustomMessageBox.Info(
+                    "Odcinki się przecinają. Przecięcie następuje w punkcie. Współrzędne punktu przecinającego: (" + crossPoints[0].X + ", " + crossPoints[0].Y + ")");
+
+            else if (crossPoints.Count == 2)
+                CustomMessageBox.Info("Współniniowe");
             else
                 CustomMessageBox.Info("Linie nie przecinają się");
         }
@@ -506,6 +511,11 @@ namespace WinForms
             Draw();
         }
 
+        private void label20_Click(object sender, EventArgs e)
+        {
+
+        }
+
         private void StartUpData()
         {
             AxTextBox.Text = "552";
@@ -545,6 +555,9 @@ namespace WinForms
                 TextRenderer.DrawText(graphics, text, font, bounds, textColor, flags);
             }
         }
+
+
+
 
     }
 }
