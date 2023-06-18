@@ -78,6 +78,8 @@
             this.btnColor1 = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.label15 = new System.Windows.Forms.Label();
+            this.cbGridlines = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -317,6 +319,8 @@
             // groupBox3
             // 
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox3.Controls.Add(this.cbGridlines);
+            this.groupBox3.Controls.Add(this.label15);
             this.groupBox3.Controls.Add(this.trackBarPoint);
             this.groupBox3.Controls.Add(this.label14);
             this.groupBox3.Controls.Add(this.panelLineSaveSettings);
@@ -597,6 +601,25 @@
             this.label9.TabIndex = 9;
             this.label9.Text = "Prosta 1";
             // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(443, 64);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(89, 13);
+            this.label15.TabIndex = 35;
+            this.label15.Text = "Linie pomocnicze";
+            // 
+            // cbGridlines
+            // 
+            this.cbGridlines.AutoSize = true;
+            this.cbGridlines.Location = new System.Drawing.Point(549, 64);
+            this.cbGridlines.Name = "cbGridlines";
+            this.cbGridlines.Size = new System.Drawing.Size(15, 14);
+            this.cbGridlines.TabIndex = 36;
+            this.cbGridlines.UseVisualStyleBackColor = true;
+            this.cbGridlines.Click += new System.EventHandler(this.cb_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -684,6 +707,8 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TrackBar trackBarPoint;
         private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.CheckBox cbGridlines;
+        private System.Windows.Forms.Label label15;
     }
 }
 

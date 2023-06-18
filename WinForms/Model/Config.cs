@@ -198,5 +198,12 @@ namespace WinForms.Model
             get => _saveValues ?? true;
             set => _saveValues = value;
         }
+
+        private bool? _gridlinesVisibily;
+        public bool GridlinesVisibility
+        {
+            get => _gridlinesVisibily ?? true;
+            set => _gridlinesVisibily = value;
+        }
     }
 }

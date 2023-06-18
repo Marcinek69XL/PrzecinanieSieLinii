@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Runtime.Remoting.Messaging;
 using System.Windows.Forms;
 using WinForms.Controllers;
 using WinForms.Model;
@@ -40,7 +41,7 @@ namespace WinForms
             StartUpData();
 
             _insertionController = new InsertionContoller();
-            _scaleController = new ScaleController();
+            _scaleController = new ScaleController(0.98f, 30);
             _configControllerSettings = new ConfigController<Config>("config.json");
             _configControllerValues = new ConfigController<Values>("values.json");
 
@@ -111,7 +112,7 @@ namespace WinForms
 
         private void InitCheckboxes()
         {
-            var cbs = new List<CheckBox>() { cbNet, cbLine2, cbLine1, cbAxis };
+            var cbs = new List<CheckBox>() { cbNet, cbLine2, cbLine1, cbAxis, cbGridlines };
 
             foreach (var cb in cbs)
             {
@@ -155,6 +156,7 @@ namespace WinForms
             cbLine1.Checked = config.Line1IsVisibility;
             cbLine2.Checked = config.Line2IsVisibility;
             cbNet.Checked = config.NetVisibility;
+            cbGridlines.Checked = config.GridlinesVisibility;
 
             btnAxisColor.BackColor = config.AxisColor;
             btnColor1.BackColor = config.Line1Color;
@@ -244,6 +246,28 @@ namespace WinForms
             }
             
             DrawLabels(g, drawA, drawB, drawC, drawD);
+
+            if (_config.GridlinesVisibility)
+                Gridlines(g, drawA, drawB, drawC, drawD);
+        }
+
+        private void Gridlines(Graphics graphics, MyPoint drawA, MyPoint drawB, MyPoint drawC, MyPoint drawD)
+        {
+            var pen = new Pen(Color.Black);
+            pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+
+            // Pionowe
+            graphics.DrawLine(pen, (float)drawA.X, (float)drawA.Y, (float)drawA.X, pictureBox1.Height / 2);
+            graphics.DrawLine(pen, (float)drawB.X, (float)drawB.Y, (float)drawB.X, pictureBox1.Height / 2);
+            graphics.DrawLine(pen, (float)drawC.X, (float)drawC.Y, (float)drawC.X, pictureBox1.Height / 2);
+            graphics.DrawLine(pen, (float)drawD.X, (float)drawD.Y, (float)drawD.X, pictureBox1.Height / 2);
+
+            // Poziome
+            graphics.DrawLine(pen, (float)drawA.X, (float)drawA.Y, pictureBox1.Width / 2, (float)drawA.Y);
+            graphics.DrawLine(pen, (float)drawB.X, (float)drawB.Y, pictureBox1.Width / 2, (float)drawB.Y);
+            graphics.DrawLine(pen, (float)drawC.X, (float)drawC.Y, pictureBox1.Width / 2, (float)drawC.Y);
+            graphics.DrawLine(pen, (float)drawD.X, (float)drawD.Y, pictureBox1.Width / 2, (float)drawD.Y);
+
         }
 
         private void DrawPoint(Graphics g, MyPoint point, int pointSize)
@@ -337,6 +361,9 @@ namespace WinForms
             // Narysuj strzałki na końcach osi
             DrawArrow(g, startX, endX, arrowSize, lineWidth, _config.AxisColor);
             DrawArrow(g, startY, endY, arrowSize, lineWidth, _config.AxisColor);
+
+            DrawTransparentText(g, "y", new Font("Arial", 16), new Rectangle(pictureBox1.Width / 2,0, 30,30), Color.Black);
+            DrawTransparentText(g, "x", new Font("Arial", 16), new Rectangle(pictureBox1.Width - 30, pictureBox1.Height / 2, 30, 30), Color.Black);
         }
 
         private void btnColor_Click(object sender, EventArgs e)
@@ -404,6 +431,8 @@ namespace WinForms
                 _config.AxisIsVisibility = cb.Checked;
             else if (cb.Name == "cbNet")
                 _config.NetVisibility = cb.Checked;
+            else if (cb.Name == "cbGridlines")
+                _config.GridlinesVisibility = cb.Checked;
 
             Draw();
         }

@@ -55,6 +55,19 @@ namespace WinForms.Controllers
     }
     public class ScaleController : IScaleController
     {
+        private readonly float _scale;
+        private readonly float _padding;
+        /// <summary>
+        /// scale - ponizej 1 dajemy, inna wartość niema sensu, padding po to żeby z lewej i z góry był jakiś odstęp. Ale nie mam pewnosci czy ten padding nie psuje
+        /// </summary>
+        /// <param name="scale"></param>
+        /// <param name="padding"></param>
+        public ScaleController(float scale, float padding)
+        {
+            _scale = scale;
+            _padding = padding;
+        }
+
         /// <summary>
         /// Nie jesteśmy w stanie narysować punktów o ujemnych współrzędnych, więc stosujemy stosowne przesunięcie na plusowe wartości
         /// </summary>
@@ -111,8 +124,8 @@ namespace WinForms.Controllers
 
             for (int i = 0; i < points.Count; i++)
             {
-                points[i].X = (points[i].X / scaleRatioX) * 0.99;
-                points[i].Y = (points[i].Y / scaleRatioY) * 0.99;
+                points[i].X = (points[i].X / scaleRatioX) * _scale;
+                points[i].Y = (points[i].Y / scaleRatioY) * _scale;
             }
 
             return points;
@@ -154,8 +167,8 @@ namespace WinForms.Controllers
 
             for (int i = 0; i < points.Count; i++)
             {
-                points[i].X = (points[i].X / scaleRatioX) * 0.99;
-                points[i].Y = (points[i].Y / scaleRatioY) * 0.99;
+                points[i].X = (points[i].X / scaleRatioX) * _scale;
+                points[i].Y = (points[i].Y / scaleRatioY) * _scale;
             }
 
             return points;
@@ -172,7 +185,13 @@ namespace WinForms.Controllers
             var b = ScaleDicreasePoints(a[0], a[1], a[2], a[3], w, h);
             var c = ScaleIncreasePoints(b[0], b[1], b[2], b[3], w, h);
 
-            return c;
+            c.ForEach(p => p.X += _padding);
+            c.ForEach(p => p.Y += _padding);
+
+            var b1 = ScaleDicreasePoints(a[0], a[1], a[2], a[3], w, h);
+            var c2 = ScaleIncreasePoints(b[0], b[1], b[2], b[3], w, h);
+
+            return c2;
         }
 
         /// <summary>
