@@ -293,6 +293,8 @@ namespace WinForms
 
                 if (_config.GridlinesVisibility)
                     Gridlines(g, drawA, drawB, drawC, drawD);
+
+                DrawScale(g, drawA, drawB, drawC, drawD, 20);
             }
             catch (Exception ex)
             {
@@ -646,5 +648,65 @@ namespace WinForms
         {
             return Math.Round(input, 2, MidpointRounding.AwayFromZero);
         }
+
+
+        public void DrawScale(Graphics g, MyPoint drawA, MyPoint drawB, MyPoint drawC, MyPoint drawD, int steps)
+        {
+            var maxX = _scaleController.GetMaxXValue(drawA, drawB, drawC, drawD);
+            var maxY = _scaleController.GetMaxYValue(drawA, drawB, drawC, drawD);
+
+            var minX = _scaleController.GetMinXValue(drawA, drawB, drawC, drawD);
+            var minY = _scaleController.GetMinYValue(drawA, drawB, drawC, drawD);
+
+            var startDrawPointX = _scaleController.SpecialRounding((int)minX);
+            var startDrawPointY= _scaleController.SpecialRounding((int)minY);
+
+            var stopDrawPointX = _scaleController.SpecialRounding((int)maxX);
+            var stopDrawPointY = _scaleController.SpecialRounding((int)maxY);
+
+            var middleHeight = pictureBox1.Height / 2;
+            var middleWidth = pictureBox1.Width / 2;
+
+            var stepX = Math.Abs(stopDrawPointX - startDrawPointX) / steps;
+            var stepY = Math.Abs(stopDrawPointY - startDrawPointY) / steps;
+
+            var realStopX = _scaleController.GetMaxXValue(_values.A, _values.B, _values.C, _values.D);
+            var realStopY = _scaleController.GetMaxYValue(_values.A, _values.B, _values.C, _values.D);
+
+            var realStartX = _scaleController.GetMinXValue(_values.A, _values.B, _values.C, _values.D);
+            var realStartY = _scaleController.GetMinYValue(_values.A, _values.B, _values.C, _values.D);
+
+            var realStepX = Math.Abs(realStartX - realStopX) / steps;
+            var realStepY = Math.Abs(realStartY - realStopY) / steps;
+
+            //poziomo
+            for (int i = 0; i <= steps; i++)
+            {
+                DrawPoint(g, new MyPoint(startDrawPointX, middleHeight), 5, Color.Black);
+                DrawTransparentText(g,
+                    Round(realStartX).ToString(),
+                    new Font("Arial", 6),
+                    new Rectangle(startDrawPointX, middleHeight, 30, 20),
+                    Color.Black
+                );
+                startDrawPointX += stepX;
+                realStartX += realStepX;
+            }
+
+            //pionowo
+            for (int i = 0; i < steps; i++)
+            {
+                DrawPoint(g, new MyPoint(middleWidth, startDrawPointY), 5, Color.Black);
+                DrawTransparentText(g,
+                    Round(realStartY).ToString(),
+                    new Font("Arial", 6),
+                    new Rectangle(middleWidth, startDrawPointY, 30, 20),
+                    Color.Black
+                );
+                startDrawPointY += stepY;
+                realStartY += realStepY;
+            }
+        }
+
     }
 }

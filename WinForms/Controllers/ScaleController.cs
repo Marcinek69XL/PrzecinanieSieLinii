@@ -52,6 +52,11 @@ namespace WinForms.Controllers
         List<MyPoint> ComplexScale(MyPoint A, MyPoint B, MyPoint C, MyPoint D, double w, double h);
 
         List<MyPoint> ComplexScalePointLabels(MyPoint A, MyPoint B, MyPoint C, MyPoint D, double w, double h);
+        double GetMinXValue(MyPoint A, MyPoint B, MyPoint C, MyPoint D);
+        double GetMinYValue(MyPoint A, MyPoint B, MyPoint C, MyPoint D);
+        double GetMaxXValue(MyPoint A, MyPoint B, MyPoint C, MyPoint D);
+        double GetMaxYValue(MyPoint A, MyPoint B, MyPoint C, MyPoint D);
+        int SpecialRounding(int input);
     }
     public class ScaleController : IScaleController
     {
@@ -233,21 +238,37 @@ namespace WinForms.Controllers
             return points;
         }
 
-        private double GetMinXValue(MyPoint A, MyPoint B, MyPoint C, MyPoint D)
+        public double GetMinXValue(MyPoint A, MyPoint B, MyPoint C, MyPoint D)
         {
             return Math.Min(Math.Min(A.X, B.X), Math.Min(C.X, D.X));
         }
-        private double GetMinYValue(MyPoint A, MyPoint B, MyPoint C, MyPoint D)
+        public double GetMinYValue(MyPoint A, MyPoint B, MyPoint C, MyPoint D)
         {
             return Math.Min(Math.Min(A.Y, B.Y), Math.Min(C.Y, D.Y));
         }
-        private double GetMaxXValue(MyPoint A, MyPoint B, MyPoint C, MyPoint D)
+        public double GetMaxXValue(MyPoint A, MyPoint B, MyPoint C, MyPoint D)
         {
             return Math.Max(Math.Max(A.X, B.X), Math.Max(C.X, D.X));
         }
-        private double GetMaxYValue(MyPoint A, MyPoint B, MyPoint C, MyPoint D)
+        public double GetMaxYValue(MyPoint A, MyPoint B, MyPoint C, MyPoint D)
         {
             return Math.Max(Math.Max(A.Y, B.Y), Math.Max(C.Y, D.Y));
+        }
+
+        public int SpecialRounding(int input)
+        {
+            int lastDigit = Math.Abs(input) % 10; // Pobranie ostatniej cyfry z wartości bezwzględnej liczby
+
+            if (lastDigit < 5)
+            {
+                // Zaokrąglenie w dół do najbliższej dziesiątki
+                return (input / 10) * 10;
+            }
+            else
+            {
+                // Zaokrąglenie w górę do najbliższej dziesiątki
+                return ((input / 10) + Math.Sign(input)) * 10;
+            }
         }
     }
 }
