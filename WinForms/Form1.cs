@@ -63,7 +63,7 @@ namespace WinForms
             LoadConfig();
             LoadValues();
 
-            InitCheckboxes();
+            //InitCheckboxes();
             SetButtonsFontBlackOrWhite();
         }
 
@@ -216,7 +216,7 @@ namespace WinForms
                 firstCrossingPoint = crossPoints.First();
                 isCrossing = true;
                 CustomMessageBox.Info(
-                    "Odcinki się przecinają. Przecięcie następuje w punkcie. Współrzędne punktu przecinającego: (" + crossPoints[0].X + ", " + crossPoints[0].Y + ")");
+                    "Odcinki się przecinają. Przecięcie następuje w punkcie. Współrzędne punktu przecinającego: (" + Round(crossPoints[0].X) + " ; " + Round(crossPoints[0].Y) + ")");
             }
             
             else if (crossPoints.Count == 2)
@@ -277,10 +277,10 @@ namespace WinForms
 
             if (_config.PointsVisibily)
             {
-                DrawPoint(g, drawA, _config.PointSize);
-                DrawPoint(g, drawB, _config.PointSize);
-                DrawPoint(g, drawC, _config.PointSize);
-                DrawPoint(g, drawD, _config.PointSize);
+                DrawPoint(g, drawA, _config.PointSize, _config.Line1Color);
+                DrawPoint(g, drawB, _config.PointSize, _config.Line1Color);
+                DrawPoint(g, drawC, _config.PointSize, _config.Line2Color);
+                DrawPoint(g, drawD, _config.PointSize, _config.Line2Color);
             }
             
             DrawLabels(g, drawA, drawB, drawC, drawD);
@@ -308,12 +308,12 @@ namespace WinForms
 
         }
 
-        private void DrawPoint(Graphics g, MyPoint point, int pointSize)
+        private void DrawPoint(Graphics g, MyPoint point, int pointSize, Color color)
         {
             // Narysowanie punktu
             var pointX = point.X - pointSize / 2;
             var pointY = point.Y - pointSize / 2;
-            Brush pointBrush = new SolidBrush(Color.Blue);
+            Brush pointBrush = new SolidBrush(color);
             g.FillEllipse(pointBrush, new Rectangle((int)pointX, (int)pointY, pointSize, pointSize));
         }
 
@@ -620,7 +620,7 @@ namespace WinForms
 
             var roundValue1 = Round(point.X);
             var roundValue2 = Round(point.Y);
-            return $"P{index} = ( {roundValue1} ) , ( {roundValue2} )";
+            return $"P{index} = ( {roundValue1} ; {roundValue2} )";
         }
 
         private double Round(double input)
