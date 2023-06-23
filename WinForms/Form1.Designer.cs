@@ -95,6 +95,8 @@
             this.btnAxisScaleColor = new System.Windows.Forms.Button();
             this.cbAxisScale = new System.Windows.Forms.CheckBox();
             this.trackBarScaleElements = new System.Windows.Forms.TrackBar();
+            this.label17 = new System.Windows.Forms.Label();
+            this.trackBarDisplayApproximation = new System.Windows.Forms.TrackBar();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -111,6 +113,7 @@
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarAxisScale)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarScaleElements)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarDisplayApproximation)).BeginInit();
             this.SuspendLayout();
             // 
             // AxTextBox
@@ -177,7 +180,7 @@
             // ByTextBox
             // 
             this.ByTextBox.Location = new System.Drawing.Point(139, 61);
-            this.ByTextBox.MaxLength = 3;
+            this.ByTextBox.MaxLength = 6;
             this.ByTextBox.Name = "ByTextBox";
             this.ByTextBox.Size = new System.Drawing.Size(58, 20);
             this.ByTextBox.TabIndex = 6;
@@ -339,6 +342,8 @@
             // groupBox3
             // 
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox3.Controls.Add(this.trackBarDisplayApproximation);
+            this.groupBox3.Controls.Add(this.label17);
             this.groupBox3.Controls.Add(this.trackBarScaleElements);
             this.groupBox3.Controls.Add(this.cbAxisScale);
             this.groupBox3.Controls.Add(this.btnAxisScaleColor);
@@ -370,7 +375,7 @@
             this.groupBox3.Controls.Add(this.label9);
             this.groupBox3.Location = new System.Drawing.Point(541, 12);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(670, 223);
+            this.groupBox3.Size = new System.Drawing.Size(670, 241);
             this.groupBox3.TabIndex = 9;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Ustawienia";
@@ -732,7 +737,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(473, 104);
+            this.label16.Location = new System.Drawing.Point(473, 91);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(34, 13);
             this.label16.TabIndex = 37;
@@ -740,7 +745,7 @@
             // 
             // trackBarAxisScale
             // 
-            this.trackBarAxisScale.Location = new System.Drawing.Point(476, 134);
+            this.trackBarAxisScale.Location = new System.Drawing.Point(476, 113);
             this.trackBarAxisScale.Maximum = 14;
             this.trackBarAxisScale.Minimum = 5;
             this.trackBarAxisScale.Name = "trackBarAxisScale";
@@ -751,7 +756,7 @@
             // 
             // btnAxisScaleColor
             // 
-            this.btnAxisScaleColor.Location = new System.Drawing.Point(589, 99);
+            this.btnAxisScaleColor.Location = new System.Drawing.Point(589, 86);
             this.btnAxisScaleColor.Name = "btnAxisScaleColor";
             this.btnAxisScaleColor.Size = new System.Drawing.Size(75, 23);
             this.btnAxisScaleColor.TabIndex = 39;
@@ -762,7 +767,7 @@
             // cbAxisScale
             // 
             this.cbAxisScale.AutoSize = true;
-            this.cbAxisScale.Location = new System.Drawing.Point(513, 104);
+            this.cbAxisScale.Location = new System.Drawing.Point(513, 91);
             this.cbAxisScale.Name = "cbAxisScale";
             this.cbAxisScale.Size = new System.Drawing.Size(15, 14);
             this.cbAxisScale.TabIndex = 40;
@@ -771,7 +776,7 @@
             // 
             // trackBarScaleElements
             // 
-            this.trackBarScaleElements.Location = new System.Drawing.Point(476, 173);
+            this.trackBarScaleElements.Location = new System.Drawing.Point(476, 148);
             this.trackBarScaleElements.Maximum = 50;
             this.trackBarScaleElements.Minimum = 6;
             this.trackBarScaleElements.Name = "trackBarScaleElements";
@@ -779,6 +784,25 @@
             this.trackBarScaleElements.TabIndex = 41;
             this.trackBarScaleElements.Value = 7;
             this.trackBarScaleElements.ValueChanged += new System.EventHandler(this.trackBarScaleElements_ValueChanged);
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(415, 192);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(124, 13);
+            this.label17.TabIndex = 42;
+            this.label17.Text = "Przybliżenia wyświetlania";
+            // 
+            // trackBarDisplayApproximation
+            // 
+            this.trackBarDisplayApproximation.Location = new System.Drawing.Point(535, 188);
+            this.trackBarDisplayApproximation.Maximum = 8;
+            this.trackBarDisplayApproximation.Name = "trackBarDisplayApproximation";
+            this.trackBarDisplayApproximation.Size = new System.Drawing.Size(129, 45);
+            this.trackBarDisplayApproximation.TabIndex = 43;
+            this.trackBarDisplayApproximation.Value = 7;
+            this.trackBarDisplayApproximation.ValueChanged += new System.EventHandler(this.trackBarDisplayApproximation_ValueChanged);
             // 
             // Form1
             // 
@@ -816,6 +840,7 @@
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.trackBarAxisScale)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarScaleElements)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarDisplayApproximation)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -888,6 +913,8 @@
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.CheckBox cbAxisScale;
         private System.Windows.Forms.TrackBar trackBarScaleElements;
+        private System.Windows.Forms.TrackBar trackBarDisplayApproximation;
+        private System.Windows.Forms.Label label17;
     }
 }
 

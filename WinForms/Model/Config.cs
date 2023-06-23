@@ -254,5 +254,20 @@ namespace WinForms.Model
             }
             set => _scaleElements = value;
         }
+
+        private int? _approximationDisplay;
+        public int ApproximationDisplay
+        {
+            get
+            {
+                if (_approximationDisplay == null)
+                {
+                    return 2;
+                }
+
+                return _approximationDisplay.Value;
+            }
+            set => _approximationDisplay = value;
+        }
     }
 }

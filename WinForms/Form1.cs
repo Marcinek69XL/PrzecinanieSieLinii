@@ -30,9 +30,9 @@ namespace WinForms
 
         static class CrossOrOverlappingMessage
         {
-            internal static readonly string Cross = "Proste się przecinają";
-            internal static readonly string NotCross = "Proste współliniowe";
-            internal static readonly string Overlapping = "Proste współliniowe";
+            internal static readonly string Cross = "Proste się przecinają:";
+            internal static readonly string NotCross = "Brak przecięcia";
+            internal static readonly string Overlapping = "Proste współliniowe:";
         }
 
         Label labelA, labelB, labelC, labelD;
@@ -121,7 +121,7 @@ namespace WinForms
 
         private void InitCheckboxes()
         {
-            var cbs = new List<CheckBox>() { cbNet, cbLine2, cbLine1, cbAxis, cbGridlines };
+            var cbs = new List<CheckBox>() { cbNet, cbLine2, cbLine1, cbAxis, cbGridlines, cbAxisScale };
 
             foreach (var cb in cbs)
             {
@@ -176,6 +176,7 @@ namespace WinForms
             trackBarPoint.Value = config.PointSize;
             trackBarAxisScale.Value = config.AxisScaleFontSize;
             trackBarScaleElements.Value = config.ScaleElements;
+            trackBarDisplayApproximation.Value = config.ApproximationDisplay;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -358,10 +359,10 @@ namespace WinForms
             var drawLabelCLoc = drawLabelsLocalizactions[2];
             var drawLabelDLoc = drawLabelsLocalizactions[3];
 
-            DrawTransparentText(g, labelA.Text, new Font("Arial", 12), new Rectangle((int)drawLabelALoc.X, (int)drawLabelALoc.Y, 100, 30), Color.Black);
-            DrawTransparentText(g, labelB.Text, new Font("Arial", 12), new Rectangle((int)drawLabelBLoc.X, (int)drawLabelBLoc.Y, 100, 30), Color.Black);
-            DrawTransparentText(g, labelC.Text, new Font("Arial", 12), new Rectangle((int)drawLabelCLoc.X, (int)drawLabelCLoc.Y, 100, 30), Color.Black);
-            DrawTransparentText(g, labelD.Text, new Font("Arial", 12), new Rectangle((int)drawLabelDLoc.X, (int)drawLabelDLoc.Y, 100, 30), Color.Black);
+            DrawTransparentText(g, labelA.Text, new Font("Arial", 12), new Rectangle((int)drawLabelALoc.X, (int)drawLabelALoc.Y, 100, 30), _config.Line1Color);
+            DrawTransparentText(g, labelB.Text, new Font("Arial", 12), new Rectangle((int)drawLabelBLoc.X, (int)drawLabelBLoc.Y, 100, 30), _config.Line1Color);
+            DrawTransparentText(g, labelC.Text, new Font("Arial", 12), new Rectangle((int)drawLabelCLoc.X, (int)drawLabelCLoc.Y, 100, 30), _config.Line2Color);
+            DrawTransparentText(g, labelD.Text, new Font("Arial", 12), new Rectangle((int)drawLabelDLoc.X, (int)drawLabelDLoc.Y, 100, 30), _config.Line2Color);
         }
 
         private void DrawLine(Graphics g, MyPoint from, MyPoint to, Color lineColor, float lineWidth)
@@ -415,8 +416,8 @@ namespace WinForms
             DrawArrow(g, startX, endX, arrowSize, lineWidth, _config.AxisColor);
             DrawArrow(g, startY, endY, arrowSize, lineWidth, _config.AxisColor);
 
-            DrawTransparentText(g, "y", new Font("Arial", 16), new Rectangle(pictureBox1.Width / 2,0, 30,30), Color.Black);
-            DrawTransparentText(g, "x", new Font("Arial", 16), new Rectangle(pictureBox1.Width - 30, pictureBox1.Height / 2, 30, 30), Color.Black);
+            DrawTransparentText(g, "y", new Font("Arial", 16), new Rectangle(pictureBox1.Width / 2,0, 30,30), _config.AxisColor);
+            DrawTransparentText(g, "x", new Font("Arial", 16), new Rectangle(pictureBox1.Width - 30, pictureBox1.Height / 2, 30, 30), _config.AxisColor);
         }
 
         private void btnColor_Click(object sender, EventArgs e)
@@ -644,6 +645,12 @@ namespace WinForms
             Draw();
         }
 
+        private void trackBarDisplayApproximation_ValueChanged(object sender, EventArgs e)
+        {
+            _config.ApproximationDisplay = trackBarDisplayApproximation.Value;
+            Draw();
+        }
+
         /// <summary>
         /// index 1 to P1, index 2 to P2... 
         /// </summary>
@@ -662,7 +669,7 @@ namespace WinForms
 
         private double Round(double input)
         {
-            return Math.Round(input, 2, MidpointRounding.AwayFromZero);
+            return Math.Round(input, _config.ApproximationDisplay, MidpointRounding.AwayFromZero);
         }
 
 
