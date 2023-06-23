@@ -82,13 +82,14 @@
             this.label9 = new System.Windows.Forms.Label();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.gbSummary = new System.Windows.Forms.GroupBox();
-            this.lbP2 = new System.Windows.Forms.Label();
-            this.lbIsCrossing = new System.Windows.Forms.Label();
-            this.lbP1 = new System.Windows.Forms.Label();
-            this.lbPunktPrzeciecia = new System.Windows.Forms.Label();
-            this.labelCzySiePrzecinaja = new System.Windows.Forms.Label();
             this.panelPunktPrzeciecia = new System.Windows.Forms.Panel();
+            this.lbP2 = new System.Windows.Forms.Label();
+            this.lbPunktPrzeciecia = new System.Windows.Forms.Label();
+            this.lbP1 = new System.Windows.Forms.Label();
+            this.lbIsCrossing = new System.Windows.Forms.Label();
+            this.labelCzySiePrzecinaja = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -102,6 +103,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.gbSummary.SuspendLayout();
             this.panelPunktPrzeciecia.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // AxTextBox
@@ -122,9 +124,9 @@
             this.groupBox1.Controls.Add(this.BxTextBox);
             this.groupBox1.Controls.Add(this.AyTextBox);
             this.groupBox1.Controls.Add(this.AxTextBox);
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
+            this.groupBox1.Location = new System.Drawing.Point(19, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(250, 118);
+            this.groupBox1.Size = new System.Drawing.Size(250, 110);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Odcinek 1";
@@ -200,9 +202,9 @@
             this.groupBox2.Controls.Add(this.DxTextBox);
             this.groupBox2.Controls.Add(this.CyTextBox);
             this.groupBox2.Controls.Add(this.CxTextBox);
-            this.groupBox2.Location = new System.Drawing.Point(12, 134);
+            this.groupBox2.Location = new System.Drawing.Point(19, 128);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(250, 118);
+            this.groupBox2.Size = new System.Drawing.Size(250, 105);
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Odcinek 2";
@@ -308,7 +310,7 @@
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
-            this.button1.Location = new System.Drawing.Point(353, 20);
+            this.button1.Location = new System.Drawing.Point(351, 25);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(82, 27);
             this.button1.TabIndex = 9;
@@ -321,9 +323,9 @@
             this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox1.Location = new System.Drawing.Point(12, 271);
+            this.pictureBox1.Location = new System.Drawing.Point(12, 259);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(1199, 578);
+            this.pictureBox1.Size = new System.Drawing.Size(1199, 590);
             this.pictureBox1.TabIndex = 10;
             this.pictureBox1.TabStop = false;
             // 
@@ -636,12 +638,22 @@
             this.gbSummary.Controls.Add(this.panelPunktPrzeciecia);
             this.gbSummary.Controls.Add(this.lbIsCrossing);
             this.gbSummary.Controls.Add(this.labelCzySiePrzecinaja);
-            this.gbSummary.Location = new System.Drawing.Point(290, 67);
+            this.gbSummary.Location = new System.Drawing.Point(278, 65);
             this.gbSummary.Name = "gbSummary";
-            this.gbSummary.Size = new System.Drawing.Size(231, 185);
+            this.gbSummary.Size = new System.Drawing.Size(231, 168);
             this.gbSummary.TabIndex = 8;
             this.gbSummary.TabStop = false;
             this.gbSummary.Text = "Podsumowanie";
+            // 
+            // panelPunktPrzeciecia
+            // 
+            this.panelPunktPrzeciecia.Controls.Add(this.lbP2);
+            this.panelPunktPrzeciecia.Controls.Add(this.lbPunktPrzeciecia);
+            this.panelPunktPrzeciecia.Controls.Add(this.lbP1);
+            this.panelPunktPrzeciecia.Location = new System.Drawing.Point(6, 76);
+            this.panelPunktPrzeciecia.Name = "panelPunktPrzeciecia";
+            this.panelPunktPrzeciecia.Size = new System.Drawing.Size(200, 82);
+            this.panelPunktPrzeciecia.TabIndex = 11;
             // 
             // lbP2
             // 
@@ -651,6 +663,24 @@
             this.lbP2.Size = new System.Drawing.Size(110, 13);
             this.lbP2.TabIndex = 13;
             this.lbP2.Text = "P = (-42,324 , 555,22)";
+            // 
+            // lbPunktPrzeciecia
+            // 
+            this.lbPunktPrzeciecia.AutoSize = true;
+            this.lbPunktPrzeciecia.Location = new System.Drawing.Point(17, 11);
+            this.lbPunktPrzeciecia.Name = "lbPunktPrzeciecia";
+            this.lbPunktPrzeciecia.Size = new System.Drawing.Size(89, 13);
+            this.lbPunktPrzeciecia.TabIndex = 9;
+            this.lbPunktPrzeciecia.Text = "Punkt przecięcia:";
+            // 
+            // lbP1
+            // 
+            this.lbP1.AutoSize = true;
+            this.lbP1.Location = new System.Drawing.Point(17, 40);
+            this.lbP1.Name = "lbP1";
+            this.lbP1.Size = new System.Drawing.Size(110, 13);
+            this.lbP1.TabIndex = 10;
+            this.lbP1.Text = "P = (-42,324 , 555,22)";
             // 
             // lbIsCrossing
             // 
@@ -662,24 +692,6 @@
             this.lbIsCrossing.TabIndex = 11;
             this.lbIsCrossing.Text = "Tak";
             // 
-            // lbP1
-            // 
-            this.lbP1.AutoSize = true;
-            this.lbP1.Location = new System.Drawing.Point(17, 40);
-            this.lbP1.Name = "lbP1";
-            this.lbP1.Size = new System.Drawing.Size(110, 13);
-            this.lbP1.TabIndex = 10;
-            this.lbP1.Text = "P = (-42,324 , 555,22)";
-            // 
-            // lbPunktPrzeciecia
-            // 
-            this.lbPunktPrzeciecia.AutoSize = true;
-            this.lbPunktPrzeciecia.Location = new System.Drawing.Point(17, 11);
-            this.lbPunktPrzeciecia.Name = "lbPunktPrzeciecia";
-            this.lbPunktPrzeciecia.Size = new System.Drawing.Size(89, 13);
-            this.lbPunktPrzeciecia.TabIndex = 9;
-            this.lbPunktPrzeciecia.Text = "Punkt przecięcia:";
-            // 
             // labelCzySiePrzecinaja
             // 
             this.labelCzySiePrzecinaja.AutoSize = true;
@@ -689,33 +701,30 @@
             this.labelCzySiePrzecinaja.TabIndex = 8;
             this.labelCzySiePrzecinaja.Text = "Czy się przecinają:";
             // 
-            // panelPunktPrzeciecia
-            // 
-            this.panelPunktPrzeciecia.Controls.Add(this.lbP2);
-            this.panelPunktPrzeciecia.Controls.Add(this.lbPunktPrzeciecia);
-            this.panelPunktPrzeciecia.Controls.Add(this.lbP1);
-            this.panelPunktPrzeciecia.Location = new System.Drawing.Point(6, 76);
-            this.panelPunktPrzeciecia.Name = "panelPunktPrzeciecia";
-            this.panelPunktPrzeciecia.Size = new System.Drawing.Size(200, 100);
-            this.panelPunktPrzeciecia.TabIndex = 11;
-            // 
             // timer1
             // 
-            this.timer1.Enabled = true;
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.groupBox1);
+            this.panel1.Controls.Add(this.gbSummary);
+            this.panel1.Controls.Add(this.groupBox2);
+            this.panel1.Controls.Add(this.button1);
+            this.panel1.Location = new System.Drawing.Point(0, 12);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(524, 241);
+            this.panel1.TabIndex = 11;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1223, 861);
-            this.Controls.Add(this.gbSummary);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox1);
             this.Name = "Form1";
             this.Text = "Form1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
@@ -741,6 +750,7 @@
             this.gbSummary.PerformLayout();
             this.panelPunktPrzeciecia.ResumeLayout(false);
             this.panelPunktPrzeciecia.PerformLayout();
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -807,6 +817,7 @@
         private System.Windows.Forms.Label lbP2;
         private System.Windows.Forms.Panel panelPunktPrzeciecia;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Panel panel1;
     }
 }
 

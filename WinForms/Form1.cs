@@ -65,6 +65,7 @@ namespace WinForms
 
             //InitCheckboxes();
             SetButtonsFontBlackOrWhite();
+            timer1.Enabled = true;
         }
 
         private void SetButtonsFontBlackOrWhite()
@@ -473,10 +474,13 @@ namespace WinForms
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if(_config.SaveConfig)
-                _configControllerSettings.SaveConfig(_config);
-            if(_config.SaveValues)
-                _configControllerValues.SaveConfig(_values);
+            if (_config == null)
+            {
+                if (_config.SaveConfig)
+                    _configControllerSettings.SaveConfig(_config);
+                if (_config.SaveValues)
+                    _configControllerValues.SaveConfig(_values);
+            }
         }
 
         private void rb_CheckedChanged(object sender, EventArgs e)
