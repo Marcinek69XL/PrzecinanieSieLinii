@@ -37,7 +37,7 @@ namespace WinForms
 
         Label labelA, labelB, labelC, labelD;
 
-        private bool _loadConfigAndValuesUserAnswer;
+        private bool _isStartPressed;
 
         private Config _config;
         private Values _values;
@@ -58,7 +58,7 @@ namespace WinForms
             _configControllerSettings = new ConfigController<Config>("config.json");
             _configControllerValues = new ConfigController<Values>("values.json");
 
-            _loadConfigAndValuesUserAnswer = false;
+            _isStartPressed = false;
 
             LoadConfig();
             LoadValues();
@@ -92,10 +92,7 @@ namespace WinForms
             if (_values == null)
                 _values = new Values();
             else
-            {
-                _loadConfigAndValuesUserAnswer = true;
                 ApplyValues();
-            }
         }
 
         private void ApplyValues()
@@ -149,18 +146,13 @@ namespace WinForms
                     CustomMessageBox.Error("Napotkano problem z wczytaniem zapisanego configu");
                 }
                 
-
                 if (_config == null)
                     _config = new Config();
-                else
-                {
-                    _loadConfigAndValuesUserAnswer = true;
-                    ApplyConfig(_config);
-                }
-                   
             }
             else
                 _config = new Config();
+
+            ApplyConfig(_config);
         }
 
         private void ApplyConfig(Config config)
@@ -186,6 +178,8 @@ namespace WinForms
 
         private void button1_Click(object sender, EventArgs e)
         {
+            _isStartPressed = true;
+
             if (!ValidateData())
                 return;
 
@@ -248,7 +242,9 @@ namespace WinForms
             if(_values == null)
                 return;
             if (_values.A == null || _values.B == null || _values.C == null || _values.D == null)
-                return;;
+                return;
+            if (!_isStartPressed)
+                return;
 
             var currentHeight = pictureBox1.Height;
             var currentWidth = pictureBox1.Width;
@@ -587,6 +583,11 @@ namespace WinForms
             {
                 TextRenderer.DrawText(graphics, text, font, bounds, textColor, flags);
             }
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            Form1_FormClosing(null, null);
         }
 
         private void CreateASummary(MyPoint p1, MyPoint p2, bool isCroosing, bool isCollinear)
