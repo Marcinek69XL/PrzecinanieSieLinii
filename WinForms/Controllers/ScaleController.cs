@@ -189,7 +189,7 @@ namespace WinForms.Controllers
             c.ForEach(p => p.Y += _padding);
 
             var b1 = ScaleDicreasePoints(a[0], a[1], a[2], a[3], w, h);
-            var c2 = ScaleIncreasePoints(b[0], b[1], b[2], b[3], w, h);
+            var c2 = ScaleIncreasePoints(b1[0], b1[1], b1[2], b1[3], w, h);
 
             return c2;
         }

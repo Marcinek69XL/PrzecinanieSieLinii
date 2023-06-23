@@ -179,55 +179,62 @@ namespace WinForms
 
         private void button1_Click(object sender, EventArgs e)
         {
-            _isStartPressed = true;
-
-            if (!ValidateData())
-                return;
-
-            InitPoints();
-
-            _values.A.X = double.Parse(AxTextBox.Text);
-            _values.A.Y = double.Parse(AyTextBox.Text);
-            _values.B.X = double.Parse(BxTextBox.Text);
-            _values.B.Y = double.Parse(ByTextBox.Text);
-            _values.C.X = double.Parse(CxTextBox.Text);
-            _values.C.Y = double.Parse(CyTextBox.Text);
-            _values.D.X = double.Parse(DxTextBox.Text);
-            _values.D.Y = double.Parse(DyTextBox.Text);
-
-            Draw();
-
-            bool przecinajaSie = _insertionController.CzySiePrzecinaja(_values.A, _values.B, _values.C, _values.D);
-            var crossPoints = _insertionController.WyznaczPunktPrzeciecia(_values.A, _values.B, _values.C, _values.D);
-
-
-            MyPoint firstCrossingPoint = null;
-            MyPoint secondCrossingPoint = null;
-            var isCrossing = false;
-            var isCollinear = false;
-
-            if (crossPoints.Count == 1 && przecinajaSie)
+            try
             {
-                firstCrossingPoint = crossPoints.First();
-                isCrossing = true;
-                CustomMessageBox.Info(
-                    "Odcinki się przecinają. Przecięcie następuje w punkcie. Współrzędne punktu przecinającego: (" + Round(crossPoints[0].X) + " ; " + Round(crossPoints[0].Y) + ")");
+                _isStartPressed = true;
+
+                if (!ValidateData())
+                    return;
+
+                InitPoints();
+
+                _values.A.X = double.Parse(AxTextBox.Text);
+                _values.A.Y = double.Parse(AyTextBox.Text);
+                _values.B.X = double.Parse(BxTextBox.Text);
+                _values.B.Y = double.Parse(ByTextBox.Text);
+                _values.C.X = double.Parse(CxTextBox.Text);
+                _values.C.Y = double.Parse(CyTextBox.Text);
+                _values.D.X = double.Parse(DxTextBox.Text);
+                _values.D.Y = double.Parse(DyTextBox.Text);
+
+                Draw();
+
+                bool przecinajaSie = _insertionController.CzySiePrzecinaja(_values.A, _values.B, _values.C, _values.D);
+                var crossPoints = _insertionController.WyznaczPunktPrzeciecia(_values.A, _values.B, _values.C, _values.D);
+
+
+                MyPoint firstCrossingPoint = null;
+                MyPoint secondCrossingPoint = null;
+                var isCrossing = false;
+                var isCollinear = false;
+
+                if (crossPoints.Count == 1 && przecinajaSie)
+                {
+                    firstCrossingPoint = crossPoints.First();
+                    isCrossing = true;
+                    CustomMessageBox.Info(
+                        "Odcinki się przecinają. Przecięcie następuje w punkcie. Współrzędne punktu przecinającego: (" + Round(crossPoints[0].X) + " ; " + Round(crossPoints[0].Y) + ")");
+                }
+
+                else if (crossPoints.Count == 2)
+                {
+                    isCollinear = true;
+                    secondCrossingPoint = crossPoints[1];
+                    CustomMessageBox.Info("Współniniowe");
+                }
+                else
+                {
+                    isCrossing = false;
+                    isCollinear = false;
+                    CustomMessageBox.Info("Linie nie przecinają się");
+                }
+
+                CreateASummary(firstCrossingPoint, secondCrossingPoint, isCrossing, isCollinear);
             }
-            
-            else if (crossPoints.Count == 2)
+            catch (Exception ex)
             {
-                isCollinear = true;
-                secondCrossingPoint = crossPoints[1];
-                CustomMessageBox.Info("Współniniowe");
+                // ignored
             }
-            else
-            {
-                isCrossing = false;
-                isCollinear = false;
-                CustomMessageBox.Info("Linie nie przecinają się");
-            }
-            
-            CreateASummary(firstCrossingPoint, secondCrossingPoint, isCrossing, isCollinear);
         }
 
         private void InitPoints()
@@ -240,50 +247,57 @@ namespace WinForms
 
         private void Draw()
         {
-            if(_values == null)
-                return;
-            if (_values.A == null || _values.B == null || _values.C == null || _values.D == null)
-                return;
-            if (!_isStartPressed)
-                return;
-
-            var currentHeight = pictureBox1.Height;
-            var currentWidth = pictureBox1.Width;
-
-            var g = pictureBox1.CreateGraphics();
-            g.Clear(Color.White);
-
-            if (_config.NetVisibility)
-                DrawNet(g);
-            
-            if (_config.AxisIsVisibility)
-                DrawAxis(g, _config.AxisColor);
-
-            var pointsToDraw = _scaleController.ComplexScale(_values.A, _values.B, _values.C, _values.D, currentWidth, currentHeight);
-
-            var drawA = pointsToDraw[0];
-            var drawB = pointsToDraw[1];
-            var drawC = pointsToDraw[2];
-            var drawD = pointsToDraw[3];
-
-            if (_config.Line1IsVisibility)
-                DrawLine(g, drawA, drawB, _config.Line1Color, _config.Line1Width);
-
-            if (_config.Line2IsVisibility)
-                DrawLine(g, drawC, drawD, _config.Line2Color, _config.Line2Width);
-
-            if (_config.PointsVisibily)
+            try
             {
-                DrawPoint(g, drawA, _config.PointSize, _config.Line1Color);
-                DrawPoint(g, drawB, _config.PointSize, _config.Line1Color);
-                DrawPoint(g, drawC, _config.PointSize, _config.Line2Color);
-                DrawPoint(g, drawD, _config.PointSize, _config.Line2Color);
-            }
-            
-            DrawLabels(g, drawA, drawB, drawC, drawD);
+                if (_values == null)
+                    return;
+                if (_values.A == null || _values.B == null || _values.C == null || _values.D == null)
+                    return;
+                if (!_isStartPressed)
+                    return;
 
-            if (_config.GridlinesVisibility)
-                Gridlines(g, drawA, drawB, drawC, drawD);
+                var currentHeight = pictureBox1.Height;
+                var currentWidth = pictureBox1.Width;
+
+                var g = pictureBox1.CreateGraphics();
+                g.Clear(Color.White);
+
+                if (_config.NetVisibility)
+                    DrawNet(g);
+
+                if (_config.AxisIsVisibility)
+                    DrawAxis(g, _config.AxisColor);
+
+                var pointsToDraw = _scaleController.ComplexScale(_values.A, _values.B, _values.C, _values.D, currentWidth, currentHeight);
+
+                var drawA = pointsToDraw[0];
+                var drawB = pointsToDraw[1];
+                var drawC = pointsToDraw[2];
+                var drawD = pointsToDraw[3];
+
+                if (_config.Line1IsVisibility)
+                    DrawLine(g, drawA, drawB, _config.Line1Color, _config.Line1Width);
+
+                if (_config.Line2IsVisibility)
+                    DrawLine(g, drawC, drawD, _config.Line2Color, _config.Line2Width);
+
+                if (_config.PointsVisibily)
+                {
+                    DrawPoint(g, drawA, _config.PointSize, _config.Line1Color);
+                    DrawPoint(g, drawB, _config.PointSize, _config.Line1Color);
+                    DrawPoint(g, drawC, _config.PointSize, _config.Line2Color);
+                    DrawPoint(g, drawD, _config.PointSize, _config.Line2Color);
+                }
+
+                DrawLabels(g, drawA, drawB, drawC, drawD);
+
+                if (_config.GridlinesVisibility)
+                    Gridlines(g, drawA, drawB, drawC, drawD);
+            }
+            catch (Exception ex)
+            {
+                // ignored
+            }
         }
 
         private void Gridlines(Graphics graphics, MyPoint drawA, MyPoint drawB, MyPoint drawC, MyPoint drawD)
