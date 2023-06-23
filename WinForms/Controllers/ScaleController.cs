@@ -56,7 +56,6 @@ namespace WinForms.Controllers
         double GetMinYValue(MyPoint A, MyPoint B, MyPoint C, MyPoint D);
         double GetMaxXValue(MyPoint A, MyPoint B, MyPoint C, MyPoint D);
         double GetMaxYValue(MyPoint A, MyPoint B, MyPoint C, MyPoint D);
-        int SpecialRounding(int input);
     }
     public class ScaleController : IScaleController
     {
@@ -253,22 +252,6 @@ namespace WinForms.Controllers
         public double GetMaxYValue(MyPoint A, MyPoint B, MyPoint C, MyPoint D)
         {
             return Math.Max(Math.Max(A.Y, B.Y), Math.Max(C.Y, D.Y));
-        }
-
-        public int SpecialRounding(int input)
-        {
-            int lastDigit = Math.Abs(input) % 10; // Pobranie ostatniej cyfry z wartości bezwzględnej liczby
-
-            if (lastDigit < 5)
-            {
-                // Zaokrąglenie w dół do najbliższej dziesiątki
-                return (input / 10) * 10;
-            }
-            else
-            {
-                // Zaokrąglenie w górę do najbliższej dziesiątki
-                return ((input / 10) + Math.Sign(input)) * 10;
-            }
         }
     }
 }

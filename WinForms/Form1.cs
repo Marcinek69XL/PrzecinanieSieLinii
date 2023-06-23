@@ -51,8 +51,6 @@ namespace WinForms
         {
             InitializeComponent();
 
-            StartUpData();
-
             _insertionController = new InsertionContoller();
             _scaleController = new ScaleController(0.98f, 30);
             _configControllerSettings = new ConfigController<Config>("config.json");
@@ -63,14 +61,14 @@ namespace WinForms
             LoadConfig();
             LoadValues();
 
-            //InitCheckboxes();
+            InitCheckboxes();
             SetButtonsFontBlackOrWhite();
             timer1.Enabled = true;
         }
 
         private void SetButtonsFontBlackOrWhite()
         {
-            var btns = new List<Button>() {btnColor1, btnColor2, btnAxisColor, btnColorNet};
+            var btns = new List<Button>() {btnColor1, btnColor2, btnAxisColor, btnColorNet, btnAxisScaleColor};
 
             foreach (var btn in btns)
             {
@@ -163,18 +161,21 @@ namespace WinForms
             cbLine2.Checked = config.Line2IsVisibility;
             cbNet.Checked = config.NetVisibility;
             cbGridlines.Checked = config.GridlinesVisibility;
+            cbAxis.Checked = config.AxisScaleIsVisible;
 
             btnAxisColor.BackColor = config.AxisColor;
             btnColor1.BackColor = config.Line1Color;
             btnColor2.BackColor = config.Line2Color;
             btnColorNet.BackColor = config.NetColor;
+            btnAxisScaleColor.BackColor = config.AxisScaleColor;
 
             trackBarAxis.Value = config.AxisWidth;
             trackBar1.Value = config.Line1Width;
             trackBar2.Value = config.Line2Width;
             trackBarNet.Value = config.NetWidth;
             trackBarPoint.Value = config.PointSize;
-            
+            trackBarAxisScale.Value = config.AxisScaleFontSize;
+            trackBarScaleElements.Value = config.ScaleElements;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -294,7 +295,8 @@ namespace WinForms
                 if (_config.GridlinesVisibility)
                     Gridlines(g, drawA, drawB, drawC, drawD);
 
-                DrawScale(g, drawA, drawB, drawC, drawD, 20);
+                if (_config.AxisScaleIsVisible)
+                    DrawScale(g, drawA, drawB, drawC, drawD, 20);
             }
             catch (Exception ex)
             {
@@ -430,6 +432,8 @@ namespace WinForms
                     _config.Line2Color = color;
                 else if (btn.Name == "btnColorNet")
                     _config.NetColor = color;
+                else if (btn.Name == "btnAxisScaleColor")
+                    _config.AxisScaleColor = color;
                 else
                     _config.AxisColor = color;
 
@@ -484,16 +488,22 @@ namespace WinForms
                 _config.NetVisibility = cb.Checked;
             else if (cb.Name == "cbGridlines")
                 _config.GridlinesVisibility = cb.Checked;
+            else if (cb.Name == "cbAxisScale")
+                _config.AxisScaleIsVisible = cb.Checked;
 
             Draw();
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (_config == null)
+            if (_config != null)
             {
                 if (_config.SaveConfig)
                     _configControllerSettings.SaveConfig(_config);
+            }
+
+            if (_values != null)
+            {
                 if (_config.SaveValues)
                     _configControllerValues.SaveConfig(_values);
             }
@@ -560,24 +570,6 @@ namespace WinForms
             Draw();
         }
 
-        private void label20_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void StartUpData()
-        {
-            AxTextBox.Text = "552";
-            BxTextBox.Text = "42";
-            CxTextBox.Text = "551";
-            DxTextBox.Text = "222";
-            AyTextBox.Text = "79";
-            ByTextBox.Text = "340";
-            CyTextBox.Text = "155";
-            DyTextBox.Text = "444";
-        }
-
-
         private void DrawArrow(Graphics graphics, PointF startPoint, PointF endPoint, float arrowSize, float lineWidth, Color axisColor)
         {
             float angle = (float)Math.Atan2(endPoint.Y - startPoint.Y, endPoint.X - startPoint.X);
@@ -594,10 +586,22 @@ namespace WinForms
             }
         }
 
+        /// <summary>
+        /// Przy bounds, wymiary i tak są nadpisywane
+        /// </summary>
+        /// <param name="graphics"></param>
+        /// <param name="text"></param>
+        /// <param name="font"></param>
+        /// <param name="bounds"></param>
+        /// <param name="textColor"></param>
         private void DrawTransparentText(Graphics graphics, string text, Font font, Rectangle bounds, Color textColor)
         {
             TextFormatFlags flags = TextFormatFlags.VerticalCenter | TextFormatFlags.HorizontalCenter |
                                     TextFormatFlags.SingleLine | TextFormatFlags.NoPadding;
+
+            var allocateBounds = graphics.MeasureString(text, font);
+            bounds.Width = (int) allocateBounds.Width;
+            bounds.Height = (int) allocateBounds.Height;
 
             using (SolidBrush brush = new SolidBrush(textColor))
             {
@@ -626,6 +630,18 @@ namespace WinForms
             lbP1.Text = CreateAResultMessage(p1, 1);
             lbP2.Text = CreateAResultMessage(p2, 2);
 
+        }
+
+        private void trackBarAxisScale_ValueChanged(object sender, EventArgs e)
+        {
+            _config.AxisScaleFontSize = trackBarAxisScale.Value;
+            Draw();
+        }
+
+        private void trackBarScaleElements_ValueChanged(object sender, EventArgs e)
+        {
+            _config.ScaleElements = trackBarScaleElements.Value;
+            Draw();
         }
 
         /// <summary>
@@ -658,17 +674,11 @@ namespace WinForms
             var minX = _scaleController.GetMinXValue(drawA, drawB, drawC, drawD);
             var minY = _scaleController.GetMinYValue(drawA, drawB, drawC, drawD);
 
-            var startDrawPointX = _scaleController.SpecialRounding((int)minX);
-            var startDrawPointY= _scaleController.SpecialRounding((int)minY);
-
-            var stopDrawPointX = _scaleController.SpecialRounding((int)maxX);
-            var stopDrawPointY = _scaleController.SpecialRounding((int)maxY);
-
             var middleHeight = pictureBox1.Height / 2;
             var middleWidth = pictureBox1.Width / 2;
 
-            var stepX = Math.Abs(stopDrawPointX - startDrawPointX) / steps;
-            var stepY = Math.Abs(stopDrawPointY - startDrawPointY) / steps;
+            var stepX = Math.Abs(minX - maxX) / _config.ScaleElements;
+            var stepY = Math.Abs(minY - maxY) / _config.ScaleElements;
 
             var realStopX = _scaleController.GetMaxXValue(_values.A, _values.B, _values.C, _values.D);
             var realStopY = _scaleController.GetMaxYValue(_values.A, _values.B, _values.C, _values.D);
@@ -676,34 +686,36 @@ namespace WinForms
             var realStartX = _scaleController.GetMinXValue(_values.A, _values.B, _values.C, _values.D);
             var realStartY = _scaleController.GetMinYValue(_values.A, _values.B, _values.C, _values.D);
 
-            var realStepX = Math.Abs(realStartX - realStopX) / steps;
-            var realStepY = Math.Abs(realStartY - realStopY) / steps;
+            var realStepX = Math.Abs(realStartX - realStopX) / _config.ScaleElements;
+            var realStepY = Math.Abs(realStartY - realStopY) / _config.ScaleElements;
 
             //poziomo
-            for (int i = 0; i <= steps; i++)
+            for (int i = 0; i <= _config.ScaleElements; i++)
             {
-                DrawPoint(g, new MyPoint(startDrawPointX, middleHeight), 5, Color.Black);
+                DrawPoint(g, new MyPoint(minX, middleHeight), 5, _config.AxisScaleColor);
+                var display = Round(realStartX).ToString();
+                var font = new Font("Arial", _config.AxisScaleFontSize);
                 DrawTransparentText(g,
-                    Round(realStartX).ToString(),
-                    new Font("Arial", 6),
-                    new Rectangle(startDrawPointX, middleHeight, 30, 20),
-                    Color.Black
+                    display,
+                    font,
+                    new Rectangle((int)minX, middleHeight, 0, 0),
+                    _config.AxisScaleColor
                 );
-                startDrawPointX += stepX;
+                minX += stepX;
                 realStartX += realStepX;
             }
 
             //pionowo
-            for (int i = 0; i < steps; i++)
+            for (int i = 0; i <= _config.ScaleElements; i++)
             {
-                DrawPoint(g, new MyPoint(middleWidth, startDrawPointY), 5, Color.Black);
+                DrawPoint(g, new MyPoint(middleWidth, minY), 5, _config.AxisScaleColor);
                 DrawTransparentText(g,
                     Round(realStartY).ToString(),
-                    new Font("Arial", 6),
-                    new Rectangle(middleWidth, startDrawPointY, 30, 20),
-                    Color.Black
+                    new Font("Arial", _config.AxisScaleFontSize),
+                    new Rectangle(middleWidth, (int) minY, 30, 20),
+                    _config.AxisScaleColor
                 );
-                startDrawPointY += stepY;
+                minY += stepY;
                 realStartY += realStepY;
             }
         }
