@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.AxTextBox = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -52,6 +53,8 @@
             this.button1 = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.cbGridlines = new System.Windows.Forms.CheckBox();
+            this.label15 = new System.Windows.Forms.Label();
             this.trackBarPoint = new System.Windows.Forms.TrackBar();
             this.label14 = new System.Windows.Forms.Label();
             this.panelLineSaveSettings = new System.Windows.Forms.Panel();
@@ -78,6 +81,22 @@
             this.btnColor1 = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.gbSummary = new System.Windows.Forms.GroupBox();
+            this.panelPunktPrzeciecia = new System.Windows.Forms.Panel();
+            this.lbP2 = new System.Windows.Forms.Label();
+            this.lbPunktPrzeciecia = new System.Windows.Forms.Label();
+            this.lbP1 = new System.Windows.Forms.Label();
+            this.lbIsCrossing = new System.Windows.Forms.Label();
+            this.labelCzySiePrzecinaja = new System.Windows.Forms.Label();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.label16 = new System.Windows.Forms.Label();
+            this.trackBarAxisScale = new System.Windows.Forms.TrackBar();
+            this.btnAxisScaleColor = new System.Windows.Forms.Button();
+            this.cbAxisScale = new System.Windows.Forms.CheckBox();
+            this.trackBarScaleElements = new System.Windows.Forms.TrackBar();
+            this.label17 = new System.Windows.Forms.Label();
+            this.trackBarDisplayApproximation = new System.Windows.Forms.TrackBar();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -89,12 +108,18 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBarAxis)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
+            this.gbSummary.SuspendLayout();
+            this.panelPunktPrzeciecia.SuspendLayout();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarAxisScale)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarScaleElements)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarDisplayApproximation)).BeginInit();
             this.SuspendLayout();
             // 
             // AxTextBox
             // 
             this.AxTextBox.Location = new System.Drawing.Point(31, 35);
-            this.AxTextBox.MaxLength = 3;
+            this.AxTextBox.MaxLength = 6;
             this.AxTextBox.Name = "AxTextBox";
             this.AxTextBox.Size = new System.Drawing.Size(58, 20);
             this.AxTextBox.TabIndex = 0;
@@ -109,9 +134,9 @@
             this.groupBox1.Controls.Add(this.BxTextBox);
             this.groupBox1.Controls.Add(this.AyTextBox);
             this.groupBox1.Controls.Add(this.AxTextBox);
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
+            this.groupBox1.Location = new System.Drawing.Point(19, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(250, 118);
+            this.groupBox1.Size = new System.Drawing.Size(250, 110);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Odcinek 1";
@@ -155,15 +180,15 @@
             // ByTextBox
             // 
             this.ByTextBox.Location = new System.Drawing.Point(139, 61);
-            this.ByTextBox.MaxLength = 3;
+            this.ByTextBox.MaxLength = 6;
             this.ByTextBox.Name = "ByTextBox";
             this.ByTextBox.Size = new System.Drawing.Size(58, 20);
-            this.ByTextBox.TabIndex = 3;
+            this.ByTextBox.TabIndex = 6;
             // 
             // BxTextBox
             // 
             this.BxTextBox.Location = new System.Drawing.Point(31, 61);
-            this.BxTextBox.MaxLength = 3;
+            this.BxTextBox.MaxLength = 6;
             this.BxTextBox.Name = "BxTextBox";
             this.BxTextBox.Size = new System.Drawing.Size(58, 20);
             this.BxTextBox.TabIndex = 2;
@@ -171,7 +196,7 @@
             // AyTextBox
             // 
             this.AyTextBox.Location = new System.Drawing.Point(139, 35);
-            this.AyTextBox.MaxLength = 3;
+            this.AyTextBox.MaxLength = 6;
             this.AyTextBox.Name = "AyTextBox";
             this.AyTextBox.Size = new System.Drawing.Size(58, 20);
             this.AyTextBox.TabIndex = 1;
@@ -187,9 +212,9 @@
             this.groupBox2.Controls.Add(this.DxTextBox);
             this.groupBox2.Controls.Add(this.CyTextBox);
             this.groupBox2.Controls.Add(this.CxTextBox);
-            this.groupBox2.Location = new System.Drawing.Point(12, 134);
+            this.groupBox2.Location = new System.Drawing.Point(19, 128);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(250, 118);
+            this.groupBox2.Size = new System.Drawing.Size(250, 105);
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Odcinek 2";
@@ -263,7 +288,7 @@
             // DyTextBox
             // 
             this.DyTextBox.Location = new System.Drawing.Point(139, 61);
-            this.DyTextBox.MaxLength = 3;
+            this.DyTextBox.MaxLength = 6;
             this.DyTextBox.Name = "DyTextBox";
             this.DyTextBox.Size = new System.Drawing.Size(58, 20);
             this.DyTextBox.TabIndex = 3;
@@ -271,7 +296,7 @@
             // DxTextBox
             // 
             this.DxTextBox.Location = new System.Drawing.Point(31, 61);
-            this.DxTextBox.MaxLength = 3;
+            this.DxTextBox.MaxLength = 6;
             this.DxTextBox.Name = "DxTextBox";
             this.DxTextBox.Size = new System.Drawing.Size(58, 20);
             this.DxTextBox.TabIndex = 2;
@@ -279,7 +304,7 @@
             // CyTextBox
             // 
             this.CyTextBox.Location = new System.Drawing.Point(139, 35);
-            this.CyTextBox.MaxLength = 3;
+            this.CyTextBox.MaxLength = 6;
             this.CyTextBox.Name = "CyTextBox";
             this.CyTextBox.Size = new System.Drawing.Size(58, 20);
             this.CyTextBox.TabIndex = 1;
@@ -287,7 +312,7 @@
             // CxTextBox
             // 
             this.CxTextBox.Location = new System.Drawing.Point(31, 35);
-            this.CxTextBox.MaxLength = 3;
+            this.CxTextBox.MaxLength = 6;
             this.CxTextBox.Name = "CxTextBox";
             this.CxTextBox.Size = new System.Drawing.Size(58, 20);
             this.CxTextBox.TabIndex = 0;
@@ -295,7 +320,7 @@
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F);
-            this.button1.Location = new System.Drawing.Point(280, 144);
+            this.button1.Location = new System.Drawing.Point(351, 25);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(82, 27);
             this.button1.TabIndex = 9;
@@ -308,15 +333,24 @@
             this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox1.Location = new System.Drawing.Point(12, 271);
+            this.pictureBox1.Location = new System.Drawing.Point(12, 259);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(1199, 578);
+            this.pictureBox1.Size = new System.Drawing.Size(1199, 590);
             this.pictureBox1.TabIndex = 10;
             this.pictureBox1.TabStop = false;
             // 
             // groupBox3
             // 
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox3.Controls.Add(this.trackBarDisplayApproximation);
+            this.groupBox3.Controls.Add(this.label17);
+            this.groupBox3.Controls.Add(this.trackBarScaleElements);
+            this.groupBox3.Controls.Add(this.cbAxisScale);
+            this.groupBox3.Controls.Add(this.btnAxisScaleColor);
+            this.groupBox3.Controls.Add(this.trackBarAxisScale);
+            this.groupBox3.Controls.Add(this.label16);
+            this.groupBox3.Controls.Add(this.cbGridlines);
+            this.groupBox3.Controls.Add(this.label15);
             this.groupBox3.Controls.Add(this.trackBarPoint);
             this.groupBox3.Controls.Add(this.label14);
             this.groupBox3.Controls.Add(this.panelLineSaveSettings);
@@ -341,14 +375,33 @@
             this.groupBox3.Controls.Add(this.label9);
             this.groupBox3.Location = new System.Drawing.Point(541, 12);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(670, 208);
+            this.groupBox3.Size = new System.Drawing.Size(670, 241);
             this.groupBox3.TabIndex = 9;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Ustawienia";
             // 
+            // cbGridlines
+            // 
+            this.cbGridlines.AutoSize = true;
+            this.cbGridlines.Location = new System.Drawing.Point(568, 16);
+            this.cbGridlines.Name = "cbGridlines";
+            this.cbGridlines.Size = new System.Drawing.Size(15, 14);
+            this.cbGridlines.TabIndex = 36;
+            this.cbGridlines.UseVisualStyleBackColor = true;
+            this.cbGridlines.Click += new System.EventHandler(this.cb_Click);
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(473, 16);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(89, 13);
+            this.label15.TabIndex = 35;
+            this.label15.Text = "Linie pomocnicze";
+            // 
             // trackBarPoint
             // 
-            this.trackBarPoint.Location = new System.Drawing.Point(519, 19);
+            this.trackBarPoint.Location = new System.Drawing.Point(525, 44);
             this.trackBarPoint.Minimum = 1;
             this.trackBarPoint.Name = "trackBarPoint";
             this.trackBarPoint.Size = new System.Drawing.Size(145, 45);
@@ -359,7 +412,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(473, 25);
+            this.label14.Location = new System.Drawing.Point(473, 47);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(40, 13);
             this.label14.TabIndex = 32;
@@ -597,16 +650,168 @@
             this.label9.TabIndex = 9;
             this.label9.Text = "Prosta 1";
             // 
+            // gbSummary
+            // 
+            this.gbSummary.Controls.Add(this.panelPunktPrzeciecia);
+            this.gbSummary.Controls.Add(this.lbIsCrossing);
+            this.gbSummary.Controls.Add(this.labelCzySiePrzecinaja);
+            this.gbSummary.Location = new System.Drawing.Point(278, 65);
+            this.gbSummary.Name = "gbSummary";
+            this.gbSummary.Size = new System.Drawing.Size(231, 168);
+            this.gbSummary.TabIndex = 8;
+            this.gbSummary.TabStop = false;
+            this.gbSummary.Text = "Podsumowanie";
+            // 
+            // panelPunktPrzeciecia
+            // 
+            this.panelPunktPrzeciecia.Controls.Add(this.lbP2);
+            this.panelPunktPrzeciecia.Controls.Add(this.lbPunktPrzeciecia);
+            this.panelPunktPrzeciecia.Controls.Add(this.lbP1);
+            this.panelPunktPrzeciecia.Location = new System.Drawing.Point(6, 76);
+            this.panelPunktPrzeciecia.Name = "panelPunktPrzeciecia";
+            this.panelPunktPrzeciecia.Size = new System.Drawing.Size(200, 82);
+            this.panelPunktPrzeciecia.TabIndex = 11;
+            // 
+            // lbP2
+            // 
+            this.lbP2.AutoSize = true;
+            this.lbP2.Location = new System.Drawing.Point(17, 58);
+            this.lbP2.Name = "lbP2";
+            this.lbP2.Size = new System.Drawing.Size(110, 13);
+            this.lbP2.TabIndex = 13;
+            this.lbP2.Text = "P = (-42,324 , 555,22)";
+            // 
+            // lbPunktPrzeciecia
+            // 
+            this.lbPunktPrzeciecia.AutoSize = true;
+            this.lbPunktPrzeciecia.Location = new System.Drawing.Point(17, 11);
+            this.lbPunktPrzeciecia.Name = "lbPunktPrzeciecia";
+            this.lbPunktPrzeciecia.Size = new System.Drawing.Size(89, 13);
+            this.lbPunktPrzeciecia.TabIndex = 9;
+            this.lbPunktPrzeciecia.Text = "Punkt przecięcia:";
+            // 
+            // lbP1
+            // 
+            this.lbP1.AutoSize = true;
+            this.lbP1.Location = new System.Drawing.Point(17, 40);
+            this.lbP1.Name = "lbP1";
+            this.lbP1.Size = new System.Drawing.Size(110, 13);
+            this.lbP1.TabIndex = 10;
+            this.lbP1.Text = "P = (-42,324 , 555,22)";
+            // 
+            // lbIsCrossing
+            // 
+            this.lbIsCrossing.AutoSize = true;
+            this.lbIsCrossing.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lbIsCrossing.Location = new System.Drawing.Point(95, 48);
+            this.lbIsCrossing.Name = "lbIsCrossing";
+            this.lbIsCrossing.Size = new System.Drawing.Size(41, 24);
+            this.lbIsCrossing.TabIndex = 11;
+            this.lbIsCrossing.Text = "Tak";
+            // 
+            // labelCzySiePrzecinaja
+            // 
+            this.labelCzySiePrzecinaja.AutoSize = true;
+            this.labelCzySiePrzecinaja.Location = new System.Drawing.Point(16, 25);
+            this.labelCzySiePrzecinaja.Name = "labelCzySiePrzecinaja";
+            this.labelCzySiePrzecinaja.Size = new System.Drawing.Size(94, 13);
+            this.labelCzySiePrzecinaja.TabIndex = 8;
+            this.labelCzySiePrzecinaja.Text = "Czy się przecinają:";
+            // 
+            // timer1
+            // 
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.groupBox1);
+            this.panel1.Controls.Add(this.gbSummary);
+            this.panel1.Controls.Add(this.groupBox2);
+            this.panel1.Controls.Add(this.button1);
+            this.panel1.Location = new System.Drawing.Point(0, 12);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(524, 241);
+            this.panel1.TabIndex = 11;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(473, 91);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(34, 13);
+            this.label16.TabIndex = 37;
+            this.label16.Text = "Skala";
+            // 
+            // trackBarAxisScale
+            // 
+            this.trackBarAxisScale.Location = new System.Drawing.Point(476, 113);
+            this.trackBarAxisScale.Maximum = 14;
+            this.trackBarAxisScale.Minimum = 5;
+            this.trackBarAxisScale.Name = "trackBarAxisScale";
+            this.trackBarAxisScale.Size = new System.Drawing.Size(188, 45);
+            this.trackBarAxisScale.TabIndex = 38;
+            this.trackBarAxisScale.Value = 7;
+            this.trackBarAxisScale.ValueChanged += new System.EventHandler(this.trackBarAxisScale_ValueChanged);
+            // 
+            // btnAxisScaleColor
+            // 
+            this.btnAxisScaleColor.Location = new System.Drawing.Point(589, 86);
+            this.btnAxisScaleColor.Name = "btnAxisScaleColor";
+            this.btnAxisScaleColor.Size = new System.Drawing.Size(75, 23);
+            this.btnAxisScaleColor.TabIndex = 39;
+            this.btnAxisScaleColor.Text = "Kolor";
+            this.btnAxisScaleColor.UseVisualStyleBackColor = true;
+            this.btnAxisScaleColor.Click += new System.EventHandler(this.btnColor_Click);
+            // 
+            // cbAxisScale
+            // 
+            this.cbAxisScale.AutoSize = true;
+            this.cbAxisScale.Location = new System.Drawing.Point(513, 91);
+            this.cbAxisScale.Name = "cbAxisScale";
+            this.cbAxisScale.Size = new System.Drawing.Size(15, 14);
+            this.cbAxisScale.TabIndex = 40;
+            this.cbAxisScale.UseVisualStyleBackColor = true;
+            this.cbAxisScale.Click += new System.EventHandler(this.cb_Click);
+            // 
+            // trackBarScaleElements
+            // 
+            this.trackBarScaleElements.Location = new System.Drawing.Point(476, 148);
+            this.trackBarScaleElements.Maximum = 50;
+            this.trackBarScaleElements.Minimum = 6;
+            this.trackBarScaleElements.Name = "trackBarScaleElements";
+            this.trackBarScaleElements.Size = new System.Drawing.Size(188, 45);
+            this.trackBarScaleElements.TabIndex = 41;
+            this.trackBarScaleElements.Value = 7;
+            this.trackBarScaleElements.ValueChanged += new System.EventHandler(this.trackBarScaleElements_ValueChanged);
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(415, 192);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(124, 13);
+            this.label17.TabIndex = 42;
+            this.label17.Text = "Przybliżenia wyświetlania";
+            // 
+            // trackBarDisplayApproximation
+            // 
+            this.trackBarDisplayApproximation.Location = new System.Drawing.Point(535, 188);
+            this.trackBarDisplayApproximation.Maximum = 8;
+            this.trackBarDisplayApproximation.Name = "trackBarDisplayApproximation";
+            this.trackBarDisplayApproximation.Size = new System.Drawing.Size(129, 45);
+            this.trackBarDisplayApproximation.TabIndex = 43;
+            this.trackBarDisplayApproximation.Value = 7;
+            this.trackBarDisplayApproximation.ValueChanged += new System.EventHandler(this.trackBarDisplayApproximation_ValueChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1223, 861);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox1);
             this.Name = "Form1";
             this.Text = "Form1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
@@ -628,6 +833,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBarAxis)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
+            this.gbSummary.ResumeLayout(false);
+            this.gbSummary.PerformLayout();
+            this.panelPunktPrzeciecia.ResumeLayout(false);
+            this.panelPunktPrzeciecia.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarAxisScale)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarScaleElements)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarDisplayApproximation)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -684,6 +897,24 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TrackBar trackBarPoint;
         private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.CheckBox cbGridlines;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.GroupBox gbSummary;
+        private System.Windows.Forms.Label lbP1;
+        private System.Windows.Forms.Label lbPunktPrzeciecia;
+        private System.Windows.Forms.Label labelCzySiePrzecinaja;
+        private System.Windows.Forms.Label lbIsCrossing;
+        private System.Windows.Forms.Label lbP2;
+        private System.Windows.Forms.Panel panelPunktPrzeciecia;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button btnAxisScaleColor;
+        private System.Windows.Forms.TrackBar trackBarAxisScale;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.CheckBox cbAxisScale;
+        private System.Windows.Forms.TrackBar trackBarScaleElements;
+        private System.Windows.Forms.TrackBar trackBarDisplayApproximation;
+        private System.Windows.Forms.Label label17;
     }
 }
 

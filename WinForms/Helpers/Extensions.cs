@@ -27,6 +27,7 @@ namespace WinForms
             }
             else
             {
+                tb.BackColor = Color.Red;
                 _result = 0;
                 return false;
             }

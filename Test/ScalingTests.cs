@@ -25,7 +25,7 @@ namespace Test
             var d = new MyPoint(dx, dy);
 
             //arrange
-            var points = new ScaleController().ScaleReduceMinusNumbers(a, b, c, d);
+            var points = new ScaleController(0.98f, 30).ScaleReduceMinusNumbers(a, b, c, d);
 
             //assert
             foreach (var point in points)
@@ -52,7 +52,7 @@ namespace Test
             var d = new MyPoint(dx, dy);
 
             //arrange
-            var points = new ScaleController().ScaleDicreasePoints(a, b, c, d, w, h);
+            var points = new ScaleController(0.98f, 30).ScaleDicreasePoints(a, b, c, d, w, h);
 
             //assert
 
@@ -80,7 +80,7 @@ namespace Test
             var d = new MyPoint(dx, dy);
 
             //arrange
-            var points = new ScaleController().ScaleIncreasePoints(a, b, c, d, w, h);
+            var points = new ScaleController(0.98f, 30).ScaleIncreasePoints(a, b, c, d, w, h);
 
             var maxX = 0.0;
             var maxY = 0.0;
@@ -128,7 +128,7 @@ namespace Test
             var d = new MyPoint(dx, dy);
 
             //assert
-            var res = new ScaleController().ComplexScale(a, b, c, d, w, h);
+            var res = new ScaleController(0.98f, 30).ComplexScale(a, b, c, d, w, h);
 
             //arrange
             a.X.Should().Be(ax);

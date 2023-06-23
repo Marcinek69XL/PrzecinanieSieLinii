@@ -52,9 +52,26 @@ namespace WinForms.Controllers
         List<MyPoint> ComplexScale(MyPoint A, MyPoint B, MyPoint C, MyPoint D, double w, double h);
 
         List<MyPoint> ComplexScalePointLabels(MyPoint A, MyPoint B, MyPoint C, MyPoint D, double w, double h);
+        double GetMinXValue(MyPoint A, MyPoint B, MyPoint C, MyPoint D);
+        double GetMinYValue(MyPoint A, MyPoint B, MyPoint C, MyPoint D);
+        double GetMaxXValue(MyPoint A, MyPoint B, MyPoint C, MyPoint D);
+        double GetMaxYValue(MyPoint A, MyPoint B, MyPoint C, MyPoint D);
     }
     public class ScaleController : IScaleController
     {
+        private readonly float _scale;
+        private readonly float _padding;
+        /// <summary>
+        /// scale - ponizej 1 dajemy, inna wartość niema sensu, padding po to żeby z lewej i z góry był jakiś odstęp. Ale nie mam pewnosci czy ten padding nie psuje
+        /// </summary>
+        /// <param name="scale"></param>
+        /// <param name="padding"></param>
+        public ScaleController(float scale, float padding)
+        {
+            _scale = scale;
+            _padding = padding;
+        }
+
         /// <summary>
         /// Nie jesteśmy w stanie narysować punktów o ujemnych współrzędnych, więc stosujemy stosowne przesunięcie na plusowe wartości
         /// </summary>
@@ -111,8 +128,8 @@ namespace WinForms.Controllers
 
             for (int i = 0; i < points.Count; i++)
             {
-                points[i].X = (points[i].X / scaleRatioX) * 0.99;
-                points[i].Y = (points[i].Y / scaleRatioY) * 0.99;
+                points[i].X = (points[i].X / scaleRatioX) * _scale;
+                points[i].Y = (points[i].Y / scaleRatioY) * _scale;
             }
 
             return points;
@@ -154,8 +171,8 @@ namespace WinForms.Controllers
 
             for (int i = 0; i < points.Count; i++)
             {
-                points[i].X = (points[i].X / scaleRatioX) * 0.99;
-                points[i].Y = (points[i].Y / scaleRatioY) * 0.99;
+                points[i].X = (points[i].X / scaleRatioX) * _scale;
+                points[i].Y = (points[i].Y / scaleRatioY) * _scale;
             }
 
             return points;
@@ -168,11 +185,23 @@ namespace WinForms.Controllers
             var cClone = C.Clone() as MyPoint;          
             var dClone = D.Clone() as MyPoint;
 
+            //odwracanie rysowania Y
+            aClone.Y *= -1;
+            bClone.Y *= -1;
+            cClone.Y *= -1;
+            dClone.Y *= -1;
+
             var a = ScaleReduceMinusNumbers(aClone, bClone, cClone, dClone);
             var b = ScaleDicreasePoints(a[0], a[1], a[2], a[3], w, h);
             var c = ScaleIncreasePoints(b[0], b[1], b[2], b[3], w, h);
 
-            return c;
+            c.ForEach(p => p.X += _padding);
+            c.ForEach(p => p.Y += _padding);
+
+            var b1 = ScaleDicreasePoints(a[0], a[1], a[2], a[3], w, h);
+            var c2 = ScaleIncreasePoints(b1[0], b1[1], b1[2], b1[3], w, h);
+
+            return c2;
         }
 
         /// <summary>
@@ -214,19 +243,19 @@ namespace WinForms.Controllers
             return points;
         }
 
-        private double GetMinXValue(MyPoint A, MyPoint B, MyPoint C, MyPoint D)
+        public double GetMinXValue(MyPoint A, MyPoint B, MyPoint C, MyPoint D)
         {
             return Math.Min(Math.Min(A.X, B.X), Math.Min(C.X, D.X));
         }
-        private double GetMinYValue(MyPoint A, MyPoint B, MyPoint C, MyPoint D)
+        public double GetMinYValue(MyPoint A, MyPoint B, MyPoint C, MyPoint D)
         {
             return Math.Min(Math.Min(A.Y, B.Y), Math.Min(C.Y, D.Y));
         }
-        private double GetMaxXValue(MyPoint A, MyPoint B, MyPoint C, MyPoint D)
+        public double GetMaxXValue(MyPoint A, MyPoint B, MyPoint C, MyPoint D)
         {
             return Math.Max(Math.Max(A.X, B.X), Math.Max(C.X, D.X));
         }
-        private double GetMaxYValue(MyPoint A, MyPoint B, MyPoint C, MyPoint D)
+        public double GetMaxYValue(MyPoint A, MyPoint B, MyPoint C, MyPoint D)
         {
             return Math.Max(Math.Max(A.Y, B.Y), Math.Max(C.Y, D.Y));
         }

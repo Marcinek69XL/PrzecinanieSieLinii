@@ -198,5 +198,76 @@ namespace WinForms.Model
             get => _saveValues ?? true;
             set => _saveValues = value;
         }
+
+        private bool? _gridlinesVisibily;
+        public bool GridlinesVisibility
+        {
+            get => _gridlinesVisibily ?? true;
+            set => _gridlinesVisibily = value;
+        }
+
+        public Color? _axisScaleColor;
+        public Color AxisScaleColor
+        {
+            get
+            {
+                if (_axisScaleColor == null)
+                    return Color.Black;
+
+                return _axisScaleColor.Value;
+            }
+            set => _axisScaleColor = value;
+        }
+
+        private int? _axisScaleFontSize;
+        public int AxisScaleFontSize
+        {
+            get
+            {
+                if (_axisScaleFontSize == null)
+                {
+                    return 9;
+                }
+                return _axisScaleFontSize.Value;
+            }
+            set => _axisScaleFontSize = value;
+        }
+
+        private bool? _axisScaleIsVisible;
+
+        public bool AxisScaleIsVisible
+        {
+            get => _axisScaleIsVisible ?? true;
+            set => _axisScaleIsVisible = value;
+        }
+
+        private int? _scaleElements;
+        public int ScaleElements
+        {
+            get
+            {
+                if (_scaleElements == null)
+                {
+                    return 10;
+                }
+                return _scaleElements.Value;
+            }
+            set => _scaleElements = value;
+        }
+
+        private int? _approximationDisplay;
+        public int ApproximationDisplay
+        {
+            get
+            {
+                if (_approximationDisplay == null)
+                {
+                    return 2;
+                }
+
+                return _approximationDisplay.Value;
+            }
+            set => _approximationDisplay = value;
+        }
     }
 }
