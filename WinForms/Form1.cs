@@ -1,12 +1,9 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using NLog;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
-using System.Runtime.Remoting.Messaging;
 using System.Windows.Forms;
 using WinForms.Controllers;
 using WinForms.Model;
@@ -46,6 +43,8 @@ namespace WinForms
         private IScaleController _scaleController;
         private IConfigController<Config> _configControllerSettings;
         private IConfigController<Values> _configControllerValues;
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
 
         public Form1()
         {
@@ -68,7 +67,7 @@ namespace WinForms
 
         private void SetButtonsFontBlackOrWhite()
         {
-            var btns = new List<Button>() {btnColor1, btnColor2, btnAxisColor, btnColorNet, btnAxisScaleColor};
+            var btns = new List<Button>() { btnColor1, btnColor2, btnAxisColor, btnColorNet, btnAxisScaleColor };
 
             foreach (var btn in btns)
             {
@@ -121,7 +120,7 @@ namespace WinForms
 
         private void InitCheckboxes()
         {
-            var cbs = new List<CheckBox>() { cbNet, cbLine2, cbLine1, cbAxis, cbGridlines, cbAxisScale };
+            var cbs = new List<CheckBox>() { cbNet, cbLine2, cbLine1, cbAxis, cbGridlines, cbAxisScale};
 
             foreach (var cb in cbs)
             {
@@ -144,7 +143,7 @@ namespace WinForms
                 {
                     CustomMessageBox.Error("Napotkano problem z wczytaniem zapisanego configu");
                 }
-                
+
                 if (_config == null)
                     _config = new Config();
             }
@@ -161,7 +160,7 @@ namespace WinForms
             cbLine2.Checked = config.Line2IsVisibility;
             cbNet.Checked = config.NetVisibility;
             cbGridlines.Checked = config.GridlinesVisibility;
-            cbAxis.Checked = config.AxisScaleIsVisible;
+            cbAxisScale.Checked = config.AxisScaleIsVisible;   
 
             btnAxisColor.BackColor = config.AxisColor;
             btnColor1.BackColor = config.Line1Color;
@@ -236,6 +235,8 @@ namespace WinForms
             catch (Exception ex)
             {
                 // ignored
+
+                logger.Error(ex.Message + ", " + ex.StackTrace);
             }
         }
 
@@ -302,6 +303,8 @@ namespace WinForms
             catch (Exception ex)
             {
                 // ignored
+
+                logger.Error(ex.Message + ", " + ex.StackTrace);
             }
         }
 
@@ -416,7 +419,7 @@ namespace WinForms
             DrawArrow(g, startX, endX, arrowSize, lineWidth, _config.AxisColor);
             DrawArrow(g, startY, endY, arrowSize, lineWidth, _config.AxisColor);
 
-            DrawTransparentText(g, "y", new Font("Arial", 16), new Rectangle(pictureBox1.Width / 2,0, 30,30), _config.AxisColor);
+            DrawTransparentText(g, "y", new Font("Arial", 16), new Rectangle(pictureBox1.Width / 2, 0, 30, 30), _config.AxisColor);
             DrawTransparentText(g, "x", new Font("Arial", 16), new Rectangle(pictureBox1.Width - 30, pictureBox1.Height / 2, 30, 30), _config.AxisColor);
         }
 
@@ -440,7 +443,7 @@ namespace WinForms
 
                 // Ustawienie koloru napisu na etykiecie
                 SetButtonFontBlackOrWhite(btn);
-              
+
 
                 Draw();
             }
@@ -479,17 +482,17 @@ namespace WinForms
             else
                 cb.Text = CheckBoxState.Off;
 
-            if (cb.Name == "cbLine1")
+            if (cb.Name == nameof(cbLine1))
                 _config.Line1IsVisibility = cb.Checked;
-            else if (cb.Name == "cbLine2")
+            else if (cb.Name == nameof(cbLine2))
                 _config.Line2IsVisibility = cb.Checked;
-            else if (cb.Name == "cbAxis")
+            else if (cb.Name == nameof(cbAxis))
                 _config.AxisIsVisibility = cb.Checked;
-            else if (cb.Name == "cbNet")
+            else if (cb.Name == nameof(cbNet))
                 _config.NetVisibility = cb.Checked;
-            else if (cb.Name == "cbGridlines")
+            else if (cb.Name == nameof(cbGridlines))
                 _config.GridlinesVisibility = cb.Checked;
-            else if (cb.Name == "cbAxisScale")
+            else if (cb.Name == nameof(cbAxisScale))
                 _config.AxisScaleIsVisible = cb.Checked;
 
             Draw();
@@ -601,8 +604,8 @@ namespace WinForms
                                     TextFormatFlags.SingleLine | TextFormatFlags.NoPadding;
 
             var allocateBounds = graphics.MeasureString(text, font);
-            bounds.Width = (int) allocateBounds.Width;
-            bounds.Height = (int) allocateBounds.Height;
+            bounds.Width = (int)allocateBounds.Width;
+            bounds.Height = (int)allocateBounds.Height;
 
             using (SolidBrush brush = new SolidBrush(textColor))
             {
@@ -717,9 +720,9 @@ namespace WinForms
             {
                 DrawPoint(g, new MyPoint(middleWidth, minY), 5, _config.AxisScaleColor);
                 DrawTransparentText(g,
-                    Round(realStartY).ToString(),
+                    Round(realStartY *(-1)).ToString(),
                     new Font("Arial", _config.AxisScaleFontSize),
-                    new Rectangle(middleWidth, (int) minY, 30, 20),
+                    new Rectangle(middleWidth, (int)minY, 30, 20),
                     _config.AxisScaleColor
                 );
                 minY += stepY;

@@ -185,6 +185,12 @@ namespace WinForms.Controllers
             var cClone = C.Clone() as MyPoint;          
             var dClone = D.Clone() as MyPoint;
 
+            //odwracanie rysowania Y
+            aClone.Y *= -1;
+            bClone.Y *= -1;
+            cClone.Y *= -1;
+            dClone.Y *= -1;
+
             var a = ScaleReduceMinusNumbers(aClone, bClone, cClone, dClone);
             var b = ScaleDicreasePoints(a[0], a[1], a[2], a[3], w, h);
             var c = ScaleIncreasePoints(b[0], b[1], b[2], b[3], w, h);
