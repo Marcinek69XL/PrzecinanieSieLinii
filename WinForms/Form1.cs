@@ -22,6 +22,19 @@ namespace WinForms
             internal static readonly string Off = "Ukryte";
         }
 
+        static class IsLinesCrossedMessage
+        {
+            internal static readonly string Yes = "Tak";
+            internal static readonly string No = "Nie";
+        }
+
+        static class CrossOrOverlappingMessage
+        {
+            internal static readonly string Cross = "Proste się przecinają";
+            internal static readonly string NotCross = "Proste współliniowe";
+            internal static readonly string Overlapping = "Proste współliniowe";
+        }
+
         Label labelA, labelB, labelC, labelD;
 
         private bool _loadConfigAndValuesUserAnswer;
@@ -192,14 +205,34 @@ namespace WinForms
             bool przecinajaSie = _insertionController.CzySiePrzecinaja(_values.A, _values.B, _values.C, _values.D);
             var crossPoints = _insertionController.WyznaczPunktPrzeciecia(_values.A, _values.B, _values.C, _values.D);
 
+
+            MyPoint firstCrossingPoint = null;
+            MyPoint secondCrossingPoint = null;
+            var isCrossing = false;
+            var isCollinear = false;
+
             if (crossPoints.Count == 1 && przecinajaSie)
+            {
+                firstCrossingPoint = crossPoints.First();
+                isCrossing = true;
                 CustomMessageBox.Info(
                     "Odcinki się przecinają. Przecięcie następuje w punkcie. Współrzędne punktu przecinającego: (" + crossPoints[0].X + ", " + crossPoints[0].Y + ")");
-
+            }
+            
             else if (crossPoints.Count == 2)
+            {
+                isCollinear = true;
+                secondCrossingPoint = crossPoints[1];
                 CustomMessageBox.Info("Współniniowe");
+            }
             else
+            {
+                isCrossing = false;
+                isCollinear = false;
                 CustomMessageBox.Info("Linie nie przecinają się");
+            }
+            
+            CreateASummary(firstCrossingPoint, secondCrossingPoint, isCrossing, isCollinear);
         }
 
         private void InitPoints()
@@ -556,8 +589,43 @@ namespace WinForms
             }
         }
 
+        private void CreateASummary(MyPoint p1, MyPoint p2, bool isCroosing, bool isCollinear)
+        {
+            gbSummary.Visible = true;
+            panelPunktPrzeciecia.Visible = isCroosing;
+            lbIsCrossing.Text = isCroosing ? IsLinesCrossedMessage.Yes : IsLinesCrossedMessage.No;
 
+            if (isCollinear)
+                lbPunktPrzeciecia.Text = CrossOrOverlappingMessage.Overlapping;
+            else if (isCroosing)
+                lbPunktPrzeciecia.Text = CrossOrOverlappingMessage.Cross;
+            else
+                lbPunktPrzeciecia.Text = CrossOrOverlappingMessage.NotCross;
 
+            lbP1.Text = CreateAResultMessage(p1, 1);
+            lbP2.Text = CreateAResultMessage(p2, 2);
 
+        }
+
+        /// <summary>
+        /// index 1 to P1, index 2 to P2... 
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        private string CreateAResultMessage(MyPoint point, int index)
+        {
+            if (point == null)
+                return string.Empty;
+
+            var roundValue1 = Round(point.X);
+            var roundValue2 = Round(point.Y);
+            return $"P{index} = ( {roundValue1} ) , ( {roundValue2} )";
+        }
+
+        private double Round(double input)
+        {
+            return Math.Round(input, 2, MidpointRounding.AwayFromZero);
+        }
     }
 }

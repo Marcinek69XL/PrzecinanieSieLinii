@@ -80,12 +80,13 @@
             this.btnColor1 = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.label18 = new System.Windows.Forms.Label();
-            this.label17 = new System.Windows.Forms.Label();
-            this.label16 = new System.Windows.Forms.Label();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label21 = new System.Windows.Forms.Label();
+            this.gbSummary = new System.Windows.Forms.GroupBox();
+            this.lbP2 = new System.Windows.Forms.Label();
+            this.lbIsCrossing = new System.Windows.Forms.Label();
+            this.lbP1 = new System.Windows.Forms.Label();
+            this.lbPunktPrzeciecia = new System.Windows.Forms.Label();
+            this.labelCzySiePrzecinaja = new System.Windows.Forms.Label();
+            this.panelPunktPrzeciecia = new System.Windows.Forms.Panel();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -97,7 +98,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBarAxis)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
-            this.groupBox4.SuspendLayout();
+            this.gbSummary.SuspendLayout();
+            this.panelPunktPrzeciecia.SuspendLayout();
             this.SuspendLayout();
             // 
             // AxTextBox
@@ -627,72 +629,80 @@
             this.label9.TabIndex = 9;
             this.label9.Text = "Prosta 1";
             // 
-            // groupBox4
+            // gbSummary
             // 
-            this.groupBox4.Controls.Add(this.label21);
-            this.groupBox4.Controls.Add(this.label19);
-            this.groupBox4.Controls.Add(this.label18);
-            this.groupBox4.Controls.Add(this.label17);
-            this.groupBox4.Controls.Add(this.label16);
-            this.groupBox4.Location = new System.Drawing.Point(290, 67);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(231, 185);
-            this.groupBox4.TabIndex = 8;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Podsumowanie";
+            this.gbSummary.Controls.Add(this.panelPunktPrzeciecia);
+            this.gbSummary.Controls.Add(this.lbIsCrossing);
+            this.gbSummary.Controls.Add(this.labelCzySiePrzecinaja);
+            this.gbSummary.Location = new System.Drawing.Point(290, 67);
+            this.gbSummary.Name = "gbSummary";
+            this.gbSummary.Size = new System.Drawing.Size(231, 185);
+            this.gbSummary.TabIndex = 8;
+            this.gbSummary.TabStop = false;
+            this.gbSummary.Text = "Podsumowanie";
             // 
-            // label18
+            // lbP2
             // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(16, 118);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(110, 13);
-            this.label18.TabIndex = 10;
-            this.label18.Text = "P = (-42,324 , 555,22)";
+            this.lbP2.AutoSize = true;
+            this.lbP2.Location = new System.Drawing.Point(17, 58);
+            this.lbP2.Name = "lbP2";
+            this.lbP2.Size = new System.Drawing.Size(110, 13);
+            this.lbP2.TabIndex = 13;
+            this.lbP2.Text = "P = (-42,324 , 555,22)";
             // 
-            // label17
+            // lbIsCrossing
             // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(16, 87);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(89, 13);
-            this.label17.TabIndex = 9;
-            this.label17.Text = "Punkt przecięcia:";
+            this.lbIsCrossing.AutoSize = true;
+            this.lbIsCrossing.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lbIsCrossing.Location = new System.Drawing.Point(95, 48);
+            this.lbIsCrossing.Name = "lbIsCrossing";
+            this.lbIsCrossing.Size = new System.Drawing.Size(41, 24);
+            this.lbIsCrossing.TabIndex = 11;
+            this.lbIsCrossing.Text = "Tak";
             // 
-            // label16
+            // lbP1
             // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(16, 25);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(94, 13);
-            this.label16.TabIndex = 8;
-            this.label16.Text = "Czy się przecinają:";
+            this.lbP1.AutoSize = true;
+            this.lbP1.Location = new System.Drawing.Point(17, 40);
+            this.lbP1.Name = "lbP1";
+            this.lbP1.Size = new System.Drawing.Size(110, 13);
+            this.lbP1.TabIndex = 10;
+            this.lbP1.Text = "P = (-42,324 , 555,22)";
             // 
-            // label19
+            // lbPunktPrzeciecia
             // 
-            this.label19.AutoSize = true;
-            this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label19.Location = new System.Drawing.Point(95, 48);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(41, 24);
-            this.label19.TabIndex = 11;
-            this.label19.Text = "Tak";
+            this.lbPunktPrzeciecia.AutoSize = true;
+            this.lbPunktPrzeciecia.Location = new System.Drawing.Point(17, 11);
+            this.lbPunktPrzeciecia.Name = "lbPunktPrzeciecia";
+            this.lbPunktPrzeciecia.Size = new System.Drawing.Size(89, 13);
+            this.lbPunktPrzeciecia.TabIndex = 9;
+            this.lbPunktPrzeciecia.Text = "Punkt przecięcia:";
             // 
-            // label21
+            // labelCzySiePrzecinaja
             // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(16, 135);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(110, 13);
-            this.label21.TabIndex = 13;
-            this.label21.Text = "P = (-42,324 , 555,22)";
+            this.labelCzySiePrzecinaja.AutoSize = true;
+            this.labelCzySiePrzecinaja.Location = new System.Drawing.Point(16, 25);
+            this.labelCzySiePrzecinaja.Name = "labelCzySiePrzecinaja";
+            this.labelCzySiePrzecinaja.Size = new System.Drawing.Size(94, 13);
+            this.labelCzySiePrzecinaja.TabIndex = 8;
+            this.labelCzySiePrzecinaja.Text = "Czy się przecinają:";
+            // 
+            // panelPunktPrzeciecia
+            // 
+            this.panelPunktPrzeciecia.Controls.Add(this.lbP2);
+            this.panelPunktPrzeciecia.Controls.Add(this.lbPunktPrzeciecia);
+            this.panelPunktPrzeciecia.Controls.Add(this.lbP1);
+            this.panelPunktPrzeciecia.Location = new System.Drawing.Point(6, 76);
+            this.panelPunktPrzeciecia.Name = "panelPunktPrzeciecia";
+            this.panelPunktPrzeciecia.Size = new System.Drawing.Size(200, 100);
+            this.panelPunktPrzeciecia.TabIndex = 11;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1223, 861);
-            this.Controls.Add(this.groupBox4);
+            this.Controls.Add(this.gbSummary);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.button1);
@@ -719,8 +729,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBarAxis)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
+            this.gbSummary.ResumeLayout(false);
+            this.gbSummary.PerformLayout();
+            this.panelPunktPrzeciecia.ResumeLayout(false);
+            this.panelPunktPrzeciecia.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -779,12 +791,13 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.CheckBox cbGridlines;
         private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.GroupBox gbSummary;
+        private System.Windows.Forms.Label lbP1;
+        private System.Windows.Forms.Label lbPunktPrzeciecia;
+        private System.Windows.Forms.Label labelCzySiePrzecinaja;
+        private System.Windows.Forms.Label lbIsCrossing;
+        private System.Windows.Forms.Label lbP2;
+        private System.Windows.Forms.Panel panelPunktPrzeciecia;
     }
 }
 
